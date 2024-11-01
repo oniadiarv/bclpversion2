@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Enrollment</title>
+</head>
+<body>
+    <h1>Course Enrollment Form</h1>
+    <form action="process_enrollment.php" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required><br><br>
+
+        <label for="educational">Educational Attainment:</label>
+        <input type="educational" id="educational" name="educational" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="course">Select a Course:</label>
+        <select id="course" name="course" required>
+            <option value="Photoshop">Photoshop</option>
+            <option value="Web Design">Web Design</option>
+            <option value="Microsoft Office">Microsoft Office</option>
+        </select><br><br>
+
+        <h3>Assessment Questions</h3>
+        <label>Question 1: Is topic A important for you? (yes/no)</label>
+        <input type="text" name="question1" required><br>
+
+        <label>Question 2: Do you understand topic B? (yes/no)</label>
+        <input type="text" name="question2" required><br>
+
+        <label>Question 3: Are you familiar with topic C? (yes/no)</label>
+        <input type="text" name="question3" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
