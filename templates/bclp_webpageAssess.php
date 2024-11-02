@@ -37,31 +37,31 @@
         {% endfor %}
 
                     <input type="hidden" name="branch" value="{{branch}}">
-                    <input type="text" name="level" value="{{course}}">
-                    <input type="text" name="time" value="{{time}}">
-                    <input type="text" name="sem" value="{{sem}}">
+                    <input type="hidden" name="level" value="{{course}}">
+                    <input type="hidden" name="time" value="{{time}}">
+                    <input type="hidden" name="sem" value="{{sem}}">
 
-                    <input type="text" name="lastName" value="{{lastName}}">
-                    <input type="text" name="firstName" value="{{firstName}}">
-                    <input type="text" name="middleName" value="{{middleName}}">
-                    <input type="text" name="suffix" value="{{suffix}}">
-                    <input type="text" name="dob" value="{{dob}}">
-                    <input type="text" name="age" value="{{age}}">
-                    <input type="text" name="sex" value="{{gender}}">
-                    <input type="text" name="status" value="{{status}}">
+                    <input type="hidden" name="lastName" value="{{lastName}}">
+                    <input type="hidden" name="firstName" value="{{firstName}}">
+                    <input type="hidden" name="middleName" value="{{middleName}}">
+                    <input type="hidden" name="suffix" value="{{suffix}}">
+                    <input type="hidden" name="dob" value="{{dob}}">
+                    <input type="hidden" name="age" value="{{age}}">
+                    <input type="hidden" name="sex" value="{{gender}}">
+                    <input type="hidden" name="status" value="{{status}}">
 
-                    <input type="number" name="tawag" value="{{numero}}"> 
-                    <input type="text" name="email" value="{{email}}">
-                    <input type="text" name="educationalAttainment" value="{{education}}">
-                    <input type="text" name="lastSchoolAttended" value="{{lastSchoolAttended}}">
-                    <input type="text" name="schoolYear" value="{{schoolYear}}">
-                    <input type="text" name="educationalBackground" value="{{educationalBackground}}">
-                    <input type="text" name="barangay" value="{{barangay}}">
-                    <input type="text" name="district" value="{{district}}">
-                    <input type="text" name="province" value="{{province}}">
-                    <input type="text" name="completeAddress" value="{{completeAddress}}">
+                    <input type="hidden" name="tawag" value="{{numero}}"> 
+                    <input type="hidden" name="email" value="{{email}}">
+                    <input type="hidden" name="educationalAttainment" value="{{education}}">
+                    <input type="hidden" name="lastSchoolAttended" value="{{lastSchoolAttended}}">
+                    <input type="hidden" name="schoolYear" value="{{schoolYear}}">
+                    <input type="hidden" name="educationalBackground" value="{{educationalBackground}}">
+                    <input type="hidden" name="barangay" value="{{barangay}}">
+                    <input type="hidden" name="district" value="{{district}}">
+                    <input type="hidden" name="province" value="{{province}}">
+                    <input type="hidden" name="completeAddress" value="{{completeAddress}}">
               
-                 <input type="text" name="totalquestion" value="{{ questions|length }}">
+                 <input type="hidden" name="totalquestion" value="{{ questions|length }}">
                 <div class="float-end">
                     <button type="submit" class="btn btn-primary" name="submit_answers">Submit Answers</button>
                 </div>
