@@ -4,6 +4,7 @@ import mysql.connector
 import churn as ch
 import json 
 import datetime
+import os
 
 # Get the current date and time
 current_datetime = datetime.datetime.now()
@@ -16,11 +17,12 @@ app = Flask(__name__)
  
 # Database connection
 def get_db_connection():
+    db_url = os.environ.get('JAWSDB_URL')
     connection = mysql.connector.connect(
-        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        user='mb08xvujtl5y5ks3',  # Default XAMPP username
-        password='trnq84lpad70qxa1',  # Default XAMPP password
-        database='maouhppvyslx9wyi'  
+        host=db_url.split('@')[1].split('/')[0].split(':')[0],
+        user=db_url.split(':')[2].split('@')[0],
+        password=db_url.split(':')[2].split('@')[1],
+        database=db_url.split('/')[-1]
     )
     return connection
 
@@ -30,12 +32,7 @@ def bclp():
 
 @app.route('/get_barangays')
 def get_barangays():
-    connection = mysql.connector.connect(
-        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306',
-        user='mb08xvujtl5y5ks3',  # Default XAMPP username
-        password='trnq84lpad70qxa1',  # Default XAMPP password
-        database='maouhppvyslx9wyi'
-    )
+    connection = get_db_connection()
     cursor = connection.cursor()
     cursor.execute("SELECT DISTINCT barangay FROM users where userType = 'Instructor'")
     barangays = cursor.fetchall()
@@ -45,12 +42,7 @@ def get_barangays():
 
 @app.route('/get_courses/<barangay>')
 def get_courses(barangay):
-    connection = mysql.connector.connect(
-        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306',
-        user='mb08xvujtl5y5ks3',  # Default XAMPP username
-        password='trnq84lpad70qxa1',  # Default XAMPP password
-        database='maouhppvyslx9wyi'
-    )
+    connection = get_db_connection()
     cursor = connection.cursor()
     cursor.execute("SELECT DISTINCT c.courseId, c.courseTitle FROM course c JOIN schedule s ON c.courseId = s.courseId JOIN users u ON s.userid = u.userid WHERE u.barangay = %s AND status = 'Open'", (barangay,))
     courses = cursor.fetchall()
@@ -60,12 +52,7 @@ def get_courses(barangay):
 
 @app.route('/get_time/<courseId>')
 def get_time(courseId):
-    connection = mysql.connector.connect(
-        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306',
-        user='mb08xvujtl5y5ks3',  # Default XAMPP username
-        password='trnq84lpad70qxa1',  # Default XAMPP password
-        database='maouhppvyslx9wyi'
-    )
+    connection = get_db_connection()
     cursor = connection.cursor()
     cursor.execute("SELECT DISTINCT time, sem FROM schedule WHERE courseId = %s AND status = 'Open'", (courseId,))
     times = cursor.fetchall()
