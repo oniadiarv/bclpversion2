@@ -4,7 +4,6 @@ import mysql.connector
 import churn as ch
 import json 
 import datetime
-import os
 
 # Get the current date and time
 current_datetime = datetime.datetime.now()
@@ -17,12 +16,11 @@ app = Flask(__name__)
  
 # Database connection
 def get_db_connection():
-    db_url = os.environ.get('JAWSDB_URL')
     connection = mysql.connector.connect(
-        host=db_url.split('@')[1].split('/')[0].split(':')[0],
-        user=db_url.split(':')[2].split('@')[0],
-        password=db_url.split(':')[2].split('@')[1],
-        database=db_url.split('/')[-1]
+        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user='mb08xvujtl5y5ks3',  # Default XAMPP username
+        password='trnq84lpad70qxa1',  # Default XAMPP password
+        database='maouhppvyslx9wyi'  
     )
     return connection
 
