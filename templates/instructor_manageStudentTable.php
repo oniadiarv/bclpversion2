@@ -84,7 +84,7 @@
             </a>
         </li>
               <li class="sidebar-item">
-                  <a href="instructor_manageReport.php" class="sidebar-link">
+                  <a href="/instructor_manageReport" class="sidebar-link">
                   <i class="fas fa-chart-area"></i>
                       <span>Report</span>
                   </a>
@@ -105,17 +105,15 @@
                             aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <a class="navbar-brand ms-3 text-white " href="#">Barangay  <?php echo $branch?> Computer Literacy Program</a>
+                        <a class="navbar-brand ms-3 text-white " href="#">Barangay   {{ user.barangay }}  Computer Literacy Program</a>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto pe-5">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img class="my-0 py-0" id="profile" src="img/<?php echo $_SESSION['image']; ?>"
-                                            title="<?php echo $_SESSION['image']; ?>">
-                                        <?php echo $_SESSION['userType']. " ". $_SESSION['username']?>
-                                    </a>
+                                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                                {{ user.userType }} {{ user.username }}
+                                </a>
                                     <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="instructor_changePass.php">Change Password</a></li>
                                         <li>
@@ -178,7 +176,6 @@
                     <div class="table-responsive"> 
                     <table id="myTable" class="table table-hover pt-1 ">
                         <thead class='table-primary'>
-                            {% for row in Student%}
                             <tr >
                               
                                 <th>Course</th>
@@ -194,39 +191,241 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-
+                        {% for row in results %}
                         <tr>
                             
                             <td>
-                                <?= {{row.studentId}}?>
+                               {{ row[3] }}
                             </td>
                             <td>
-                                <?= $allStudent['time']?>
+                            {{ row[4] }}
                             </td>
                             <td>
-                                <?= $allStudent['sem']?>
+                            {{ row[2] }}
                             </td>
                            
                             <td>
-                                <?= $allStudent['firstname']?> <?= $allStudent['middlename']?> <?= $allStudent['lastname']?> <?= $allStudent['suffix']?>
+                                {{ row[5] }}
+                                {{ row[6] }}
+                                {{ row[7] }}
                             </td>
                             <td>
-                                <?= $allStudent['sex']?>
+                            {{ row[11] }}
                             </td>
                             <td>
-                                <?= $allStudent['email']?>
+                            {{ row[13] }}
                             </td>
                             <td>
-                                <?= $allStudent['contact']?>
+                            {{ row[14] }}
                             </td>
                             <td>
-                                <?= $allStudent['recommend']?>
+                            {{ row[21] }}
                             </td>
 
                             <td>
-                                    <a href="#?studentId=<?= $allStudent['studentId']; ?>" style="width:100%" class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#editStudent" data-studentId="<?= $allStudent['studentId']; ?>">View</a>
+                                    <a href="/update_instructor_manageStudentTable{{ row[0] }}" style="width:100%" class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#editStudent{{ row[0] }}">View</a>
                             </td>
                         </tr>
+                        <!-- edit Modal -->
+                        <div class="modal fade" id="editStudent{{ row[0] }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog  modal-xl">
+                                    <div class="modal-content" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Student Information</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div> 
+                                        <div class="modal-body">
+                                            <form id="editStudentForm" action="{{ url_for('update_instructor_manageStudentTable') }}" method= "POST">
+                                                <div class="col-12">
+                                                <input type="hidden" name="studentId" value="{{row.0}}">
+                                                <div class="form-group mb-3">
+                                                        <div class="row">
+                                                            <div class="col-sm-3 col-md-4 col-lg-3"><label for="branch">Semester:</label>
+                                                            <input type="text" class="form-control" id="sem" name="sem" value = "{{row.2}}" readonly>
+                                                            </div>
+
+                                                            <div class="col-sm-3 col-md-4 col-lg-5"><label for="level">Course</label>
+                                                                <input type="text" class="form-control" id="course" name="level" value = "{{row.3}}" readonly>
+                                                            
+                                                            </div>
+
+                                                            <div class="col-sm-3 col-md-4 col-lg-3"><label for="time">Class Schedule</label>
+                                                                <input type="text" class="form-control" id="time" name="time" value = "{{row.4}}"  readonly>
+                                                            
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <hr> 
+
+                                                    <div class="form-group  mb-3">
+                                                        <div class="row">
+                                                            <div class="col-sm-3 col-md-4 col-lg-3">
+                                                                <label for="lastName">Last Name</label>
+                                                                <input type="text" class="form-control" id="lastName" name="lastName"
+                                                                    pattern="[a-zA-Z\s]+" value = "{{row.7}}" required>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-3">
+                                                                <label for="firstName">First Name</label>
+                                                                <input type="text" class="form-control" id="firstName" name="firstName"
+                                                                    pattern="[a-zA-Z\s]+" value = "{{row.5}}" required>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-3">
+                                                                <label for="middleName">Middle Name</label>
+                                                                <input type="text" class="form-control" id="middleName" name="middleName"
+                                                                    pattern="[a-zA-Z\s]+" value = "{{row.6}}" required>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-2">
+                                                                <label for="suffix">Suffix</label>
+                                                                <select class="form-control" id="suffix" name="suffix">
+                                                                    <option value="{{row.8}} ">{{row.8}} </option>
+                                                                    <option value="Jr">Jr.</option>
+                                                                    <option value="Sr">Sr.</option>
+                                                                    <option value="Ma">Ma.</option>
+                                                                    <option value="I">I</option>
+                                                                    <option value="II">II</option>
+                                                                    <option value="III">III</option>
+                                                                    <option value="N/A">N/A</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group mb-3">
+                                                        <div class="row">
+                                                            <div class="col-sm-3 col-md-4 col-lg-3"><label for="dob">Date of Birth</label>
+                                                                <input type="date" class="form-control" id="dob" name="dob" onchange="calculateAge()" value = "{{row.9}}" required>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-2"><label for="age">Age</label>
+                                                                <input type="text" class="form-control" id="age" name="age" value = "{{row.10}}" readonly>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-2"><label for="sex">Sex</label>
+                                                                <select class="form-control" id="sex" name="sex" value = "{{row.11}}" required>
+                                                                <option value="{{row.11}}">{{row.11}}</option>
+                                                                    <option value="Male">Male</option>
+                                                                    <option value="Female">Female</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-2"><label for="status">Status</label>
+                                                                <select class="form-control" id="status" name="status" required>
+                                                                <option value="{{row.12}}">{{row.12}}</option>
+                                                                    <option value="Single">Single</option>
+                                                                    <option value="Married">Married</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group mb-3">
+                                                        <div class="row">
+                                                            <div class="col-sm-3 col-md-4 col-lg-3"><label for="cellphone">Cellphone</label>
+                                                                <input type="number" class="form-control" id="cellphone" name="cellphone" value = "{{row.14}}" required>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-4"><label for="email">Email</label>
+                                                                <input type="email" class="form-control" id="email" name="email" value = "{{row.13}}" required>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-3"><label
+                                                                    for="educationalAttainment">Educational
+                                                                    Attainment</label>
+                                                                <select class="form-control" id="educationalAttainment"
+                                                                    name="educationalAttainment" required>
+                                                                    <option value="{{row.15}}">{{row.15}}</option>
+                                                                    <option value="Elementary">Elementary</option>
+                                                                    <option value="High School">Highschool</option>
+                                                                    <option value="Senior High School">Senior High School</option>
+                                                                    <option value="College">College</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <h5>Address</h5>
+                                                    <hr>
+
+                                                    <div class="form-group mb-3">
+                                                        <div class="row">
+                                                            <div class="col-sm-3 col-md-4 col-lg-4"><label for="barangay">Barangay</label>
+                                                                <select class="form-control" id="barangay" name="barangay" required>
+                                                                <option value="{{row.16}}">{{row.16}}</option>
+                                                                    <option value="Bagong Ilog">Bagong Ilog</option>
+                                                                    <option value="Bagong Katipunan">Bagong Katipunan</option>
+                                                                    <option value="Bambang">Bambang</option>
+                                                                    <option value="Buting">Buting</option>
+                                                                    <option value="Dela Paz">Dela Paz</option>
+                                                                    <option value="Kalawaan">Kalawaan</option>
+                                                                    <option value="Kapasigan">Kapasigan</option>
+                                                                    <option value="Kapitolyo">Kapitolyo</option>
+                                                                    <option value="Malinao">Malinao</option>
+                                                                    <option value="Manggahan">Manggahan</option>
+                                                                    <option value="Maybunga">Maybunga</option>
+                                                                    <option value="Oranbo">Oranbo</option>
+                                                                    <option value="Palatiw">Palatiw</option>
+                                                                    <option value="Pinagbuhatan">Pinagbuhatan</option>
+                                                                    <option value="Pineda">Pineda</option>
+                                                                    <option value="Rosario">Rosario</option>
+                                                                    <option value="Sagad">Sagad</option>
+                                                                    <option value="San Antonio">San Antonio</option>
+                                                                    <option value="San Joaquin">San Joaquin</option>
+                                                                    <option value="San Jose">San Jose</option>
+                                                                    <option value="San Miguel">San Miguel</option>
+                                                                    <option value="San Nicolas">San Nicolas</option>
+                                                                    <option value="Santa Cruz">Santa Cruz</option>
+                                                                    <option value="Santa Lucia">Santa Lucia</option>
+                                                                    <option value="Santa Rosa">Santa Rosa</option>
+                                                                    <option value="Santo Tomas">Santo Tomas</option>
+                                                                    <option value="Santolan">Santolan</option>
+                                                                    <option value="Sumilang">Sumilang</option>
+                                                                    <option value="Ugong">Ugong</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-4"><label for="district">District</label>
+                                                                <select class="form-control" id="district" name="district" required>
+                                                                <option value="{{row.17}}">{{row.17}}</option>
+                                                                    <option value="District 1">District 1</option>
+                                                                    <option value="District 2">District 2</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-3 col-md-4 col-lg-4"><label for="province">City</label>
+                                                                <input type="text" class="form-control" id="province" name="province" pattern="[a-zA-Z\s]+" value = "{{row.18}}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group mb-3">
+                                                        <label for="completeAddress">House # / Street</label>
+                                                        <input type="text" class="form-control" id="completeAddress" name="completeAddress" pattern="[a-zA-Z0-9/-/.]*" value = "{{row.19}}" required>
+                                                    </div>
+
+                                                    <div class="form-group mb-3 col-sm-3 col-md-4 col-lg-4">
+                                                        <label for="isStudent">Status:</label>
+                                                        <select class="form-control" id="isStudent" name="isStudent" required>
+                                                                <option value="{{row.23}}">{{row.23}}</option>
+                                                                    <option value="Graduate">Graduate</option>
+                                                                    <option value="Drop-Out">Drop-Out</option>
+                                                                </select>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <input type="hidden" id="studentId" name="studentId">
+
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" name = "update" class="btn btn-primary">Update</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+<!-- end of edit Modal -->
 
                       {%endfor%}
                     </table>
@@ -253,206 +452,7 @@
     </div>
     </div>
    -->
-     <!-- edit Modal -->
-   <div class="modal fade" id="editStudent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog  modal-xl">
-            <div class="modal-content" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Student Information</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div> 
-                <div class="modal-body">
-                    <form id="editStudentForm">
-                        <div class="col-12">
- 
-                        <div class="form-group mb-3">
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-4 col-lg-3"><label for="branch">Semester:</label>
-                                    <input type="text" class="form-control" id="sem" name="sem" readonly>
-                                    </div>
-
-                                    <div class="col-sm-3 col-md-4 col-lg-5"><label for="level">Course</label>
-                                        <input type="text" class="form-control" id="course" name="level" readonly>
-                                      
-                                    </div>
-
-                                    <div class="col-sm-3 col-md-4 col-lg-3"><label for="time">Class Schedule</label>
-                                        <input type="text" class="form-control" id="time" name="time" readonly>
-                                      
-                                    </div>
-
-                                </div>
-                            </div>
-                            
-                            <hr>
-
-                            <div class="form-group  mb-3">
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-4 col-lg-3">
-                                        <label for="lastName">Last Name</label>
-                                        <input type="text" class="form-control" id="lastName" name="lastName"
-                                            pattern="[a-zA-Z\s]+" required>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-3">
-                                        <label for="firstName">First Name</label>
-                                        <input type="text" class="form-control" id="firstName" name="firstName"
-                                            pattern="[a-zA-Z\s]+" required>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-3">
-                                        <label for="middleName">Middle Name</label>
-                                        <input type="text" class="form-control" id="middleName" name="middleName"
-                                            pattern="[a-zA-Z\s]+" required>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-2">
-                                        <label for="suffix">Suffix</label>
-                                        <select class="form-control" id="suffix" name="suffix">
-                                            <option value=" "></option>
-                                            <option value="Jr">Jr.</option>
-                                            <option value="Sr">Sr.</option>
-                                            <option value="Ma">Ma.</option>
-                                            <option value="I">I</option>
-                                            <option value="II">II</option>
-                                            <option value="III">III</option>
-                                            <option value="N/A">N/A</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-4 col-lg-3"><label for="dob">Date of Birth</label>
-                                        <input type="date" class="form-control" id="dob" name="dob" onchange="calculateAge()" required>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-2"><label for="age">Age</label>
-                                        <input type="text" class="form-control" id="age" name="age" readonly>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-2"><label for="sex">Sex</label>
-                                        <select class="form-control" id="sex" name="sex" required>
-                                        <option value=""></option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-2"><label for="status">Status</label>
-                                        <select class="form-control" id="status" name="status" required>
-                                        <option value=""></option>
-                                            <option value="Single">Single</option>
-                                            <option value="Married">Married</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-4 col-lg-3"><label for="cellphone">Cellphone</label>
-                                        <input type="number" class="form-control" id="cellphone" name="cellphone"required>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-4"><label for="email">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email" required>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-3"><label
-                                            for="educationalAttainment">Educational
-                                            Attainment</label>
-                                        <select class="form-control" id="educationalAttainment"
-                                            name="educationalAttainment" required>
-                                            <option value=""></option>
-                                            <option value="Elementary">Elementary</option>
-                                            <option value="Highschool">Highschool</option>
-                                            <option value="SeniorHighschool">Senior Highschool</option>
-                                            <option value="College">College</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h5>Address</h5>
-                            <hr>
-
-                            <div class="form-group mb-3">
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-4 col-lg-4"><label for="barangay">Barangay</label>
-                                        <select class="form-control" id="barangay" name="barangay" required>
-                                        <option value=""></option>
-                                            <option value="BagongIlog">Bagong Ilog</option>
-                                            <option value="BagongKatipunan">Bagong Katipunan</option>
-                                            <option value="Bambang">Bambang</option>
-                                            <option value="Buting">Buting</option>
-                                            <option value="DelaPaz">Dela Paz</option>
-                                            <option value="Kalawaan">Kalawaan</option>
-                                            <option value="Kapasigan">Kapasigan</option>
-                                            <option value="Kapitolyo">Kapitolyo</option>
-                                            <option value="Malinao">Malinao</option>
-                                            <option value="Manggahan">Manggahan</option>
-                                            <option value="Maybunga">Maybunga</option>
-                                            <option value="Oranbo">Oranbo</option>
-                                            <option value="Palatiw">Palatiw</option>
-                                            <option value="Pinagbuhatan">Pinagbuhatan</option>
-                                            <option value="Pineda">Pineda</option>
-                                            <option value="Rosario">Rosario</option>
-                                            <option value="Sagad">Sagad</option>
-                                            <option value="SanAntonio">San Antonio</option>
-                                            <option value="SanJoaquin">San Joaquin</option>
-                                            <option value="SanJose">San Jose</option>
-                                            <option value="SanMiguel">San Miguel</option>
-                                            <option value="SanNicolas">San Nicolas</option>
-                                            <option value="SantaCruz">Santa Cruz</option>
-                                            <option value="SantaLucia">Santa Lucia</option>
-                                            <option value="SantaRosa">Santa Rosa</option>
-                                            <option value="SantoTomas">Santo Tomas</option>
-                                            <option value="Santolan">Santolan</option>
-                                            <option value="Sumilang">Sumilang</option>
-                                            <option value="Ugong">Ugong</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-4"><label for="district">District</label>
-                                        <select class="form-control" id="district" name="district" required>
-                                        <option value=""></option>
-                                            <option value="District1">District 1</option>
-                                            <option value="District2">District 2</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3 col-md-4 col-lg-4"><label for="province">City</label>
-                                        <input type="text" class="form-control" id="province" name="province" pattern="[a-zA-Z\s]+" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label for="completeAddress">House # / Street</label>
-                                <input type="text" class="form-control" id="completeAddress" name="completeAddress" pattern="[a-zA-Z0-9/-/.]*" required>
-                            </div>
-
-                            <div class="form-group mb-3 col-sm-3 col-md-4 col-lg-4">
-                                <label for="isStudent">Status:</label>
-                                <select class="form-control" id="isStudent" name="isStudent" required>
-                                        <option value="Student">Select Status</option>
-                                            <option value="Graduate">Graduate</option>
-                                            <option value="Drop-Out">Drop-Out</option>
-                                        </select>
-                            </div>
-
-
-                        </div>
-
-                        <input type="hidden" id="studentId" name="studentId">
-
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" name = "update" class="btn btn-primary">Update</button>
-                        </div>
-                    </form>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-<!-- end of edit Modal -->
+     
 
 <!-- Modal -->
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -571,76 +571,6 @@
         document.getElementById("age").value = age;
         }
 
-
-
-    $(document).ready(function() {
-        $('#editStudent').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var studentId = button.data('studentid'); // Extract info from data-* attributes
-            
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#studentId').val(studentId);
-            
-            // AJAX call to fetch student data
-            $.ajax({
-                url: 'instructor_manageStudentTable_fetch.php', // The PHP file that fetches data
-                type: 'GET',
-                data: { studentId: studentId },
-                success: function(response) {
-                    var data = JSON.parse(response);
-                    modal.find('#sem').val(data.sem);
-                    modal.find('#course').val(data.courseId);
-                    modal.find('#time').val(data.time);
-                    modal.find('#lastName').val(data.lastname);
-                    modal.find('#firstName').val(data.firstname);
-                    modal.find('#middleName').val(data.middlename);
-
-                    modal.find('#suffix').val(data.suffix);
-                    modal.find('#dob').val(data.dob);
-                    modal.find('#age').val(data.age);
-                    modal.find('#sex').val(data.sex);
-                    modal.find('#status').val(data.status);
-                    modal.find('#cellphone').val(data.contact);
-                    modal.find('#email').val(data.email);
-                    modal.find('#educationalAttainment').val(data.educational);
-
-                    modal.find('#barangay').val(data.barangay);
-                    modal.find('#district').val(data.district);
-                    modal.find('#province').val(data.province);
-                    modal.find('#completeAddress').val(data.completeAddress);
-                    modal.find('#isStudent').val(data.isStudent);
-                    
-
-                }
-            });
-        });
-    });
-
-    const ctx = document.getElementById('myChart').getContext('2d');
-        const labels = <?php echo json_encode(array_keys($graphData)); ?>;
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Recommendations Graph',
-                data: <?php echo json_encode(array_values($graphData)); ?>,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 5,
-                fill: false
-            }]
-        };
-        const config = {
-            type: 'line',
-            data: data,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        };
-        const myChart = new Chart(ctx, config);
             </Script>
 
 
