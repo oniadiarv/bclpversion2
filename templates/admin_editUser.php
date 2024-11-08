@@ -169,15 +169,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BCLP System</title>
     
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link href="fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+    <link href="static/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link href="DataTables/query.dataTables.min.css" rel="stylesheet" type="text/css">
+    <link href="static/DataTables/query.dataTables.min.css" rel="stylesheet" type="text/css">
     
    <!--
    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" /> 
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">--> 
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="static/css/style.css">
   <style>
     .input-group-text{
     cursor: pointer;
@@ -284,15 +284,14 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand ms-3 text-white " href="#">Barangay Computer Literacy Program</a>
-            
+            <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }}  Computer Literacy Program</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto pe-5">
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="my-0 py-0" id = "profile" src="img/<?php echo $_SESSION['image']; ?>" title="<?php echo $_SESSION['image']; ?>">
-                  <?php echo $_SESSION['userType']. " ". $_SESSION['username']?>
-                  </a>
+                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                                 {{ user.userType }} {{ user.username }}
+                                </a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     <li><a class="dropdown-item" href="#">Another action</a></li>
@@ -462,9 +461,9 @@
 </div>
 
   <!--<script src="script.js"></script>-->
-  <script src="jquery/jquery-3.7.1.min.js"></script>
-  <script src="js/bootstrap.bundle.js"></script>
-  <script src="DataTables/jquery.dataTables.min.js"></script>
+  <script src="static/jquery/jquery-3.7.1.min.js"></script>
+  <script src="static/js/bootstrap.bundle.js"></script>
+  <script src="static/DataTables/jquery.dataTables.min.js"></script>
 
   
   <Script>
