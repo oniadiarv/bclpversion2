@@ -141,11 +141,10 @@
                                 <div class="col-6">
                                     <h2> Assessment Test</h2>
                                 </div>
+                                
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
-                                        data-bs-target="#questioner">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
+                                    <a href="#" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#questioner">
+                                    <i class="fas fa-plus"></i> Add Questions</a>
                                 </div>
                                 <hr>
                                 <div>
@@ -214,7 +213,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form action="" method="post">
+                    <form action="/insert_instructor_exam" method="POST">
                         <div class="mt-3">
                             <label for="question" class="form-label">Assessment Question</label>
                             <input type="text" class="form-control" id="question" name="question" placeholder="" required>
