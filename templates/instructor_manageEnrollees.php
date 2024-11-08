@@ -145,7 +145,16 @@
                   <li class="breadcrumb-item active" aria-current="page">Manage Enrollee's</li>
                 </ol>
                 </nav>
-
+                {%with messages = get_flashed_messages()%}
+                    {%if messages%}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>{{message}}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {%endfor%}
+                    {%endif%}
+                {%endwith%}
               
                     
                     <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
