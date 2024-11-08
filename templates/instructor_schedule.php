@@ -150,13 +150,14 @@
               
                 <div class="card shadow-lg mb-5 bg-body-tertiary rounded">
                 <div class="card-body bg-white text-black ">
-                <div class="table-responsive">  
                 <div class="container">
                     <div class="d-flex justify-content-end">
                         <a href="#" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#setSchedule" aria-label="Set Schedule">
                         <i class="fas fa-plus"></i>Set Schedule</a>
                     </div>
                     </div>
+                <div class="table-responsive">  
+              
 
                     <table id="myTable" class="table table-hover pt-1">
                         <thead class='table-primary'>
