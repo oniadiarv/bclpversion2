@@ -134,40 +134,40 @@
 
 <body>
 <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container-fluid">
-            <img src="static/webimg/logo.png" class="rounded mx-auto d-block me-2" alt="...">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center">
+            <img src="static/webimg/logo.png" class="rounded me-2" alt="Logo" style="height: 40px;">
             <a class="navbar-brand text-white" href="#">Barangay Computer Literacy Program</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto pe-5 ">
-                    <li class="nav-item ">
-                        <a class="nav-link text-white" aria-current="page" href="#home">HOME</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link text-white" aria-current="page" href="#about">ABOUT</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link text-white" aria-current="page" href="#services">COURSE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#contact">CONTACT US</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                    <li class="nav-item">
-                        <a class="navbar-brand mr-1" href="/login">
-                            <button type="submit" class="btn btn-outline-primary text-white">Login</button>
-                        </a>
-                    </li>
-                    </li>
-                </ul>
-            </div>
         </div>
-    </nav>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto pe-5">
+                <li class="nav-item">
+                    <a class="nav-link text-white" aria-current="page" href="#home">HOME</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" aria-current="page" href="#about">ABOUT</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" aria-current="page" href="#services">COURSE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#contact">CONTACT US</a>
+                </li>
+                <li class="nav-item">
+                    <a class="navbar-brand mr-1" href="/login">
+                        <button type="submit" class="btn btn-outline-primary text-white">Login</button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
     <hr id="home">
     <div class="my-4">
         <p>.</p>
