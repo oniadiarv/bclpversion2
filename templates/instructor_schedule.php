@@ -84,7 +84,7 @@
             </a>
         </li>
               <li class="sidebar-item">
-                  <a href="instructor_manageReport.php" class="sidebar-link">
+                  <a href="/instructor_manageReport" class="sidebar-link">
                   <i class="fas fa-chart-area"></i>
                       <span>Report</span>
                   </a>
@@ -105,17 +105,15 @@
                             aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <a class="navbar-brand ms-3 text-white " href="#">Barangay <?php echo $branch?>  Computer Literacy Program</a>
+                        <a class="navbar-brand ms-3 text-white " href="#">Barangay {{ user.barangay }}  Computer Literacy Program</a>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto pe-5">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img class="my-0 py-0" id="profile" src="img/<?php echo $_SESSION['image']; ?>"
-                                            title="<?php echo $_SESSION['image']; ?>">
-                                        <?php echo $_SESSION['userType']. " ". $_SESSION['username'];?>
-                                    </a>
+                                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                                {{ user.userType }} {{ user.username }}
+                                </a>
                                     <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="instructor_changePass.php">Change Password</a></li>
                                         <li>
@@ -138,20 +136,27 @@
                   <li class="breadcrumb-item active" aria-current="page">Create schedule</li>
                 </ol>
                 </nav>
+                {%with messages = get_flashed_messages()%}
+                    {%if messages%}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>{{message}}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
 
+                        {%endfor%}
+                    {%endif%}
+                {%endwith%}
               
                 <div class="card shadow-lg mb-5 bg-body-tertiary rounded">
                 <div class="card-body bg-white text-black ">
                 <div class="table-responsive">  
                 <div class="container">
                     <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#setSchedule" aria-label="Set Schedule">
-                                    <i class="fas fa-plus"></i> Set Schedule
-                                </button>
+                        <a href="#" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#setSchedule" aria-label="Set Schedule">
+                        <i class="fas fa-plus"></i>Set Schedule</a>
                     </div>
                     </div>
-            
-
 
                     <table id="myTable" class="table table-hover pt-1">
                         <thead class='table-primary'>
@@ -165,30 +170,75 @@
                             </tr>
                         </thead>
 
-                    
+                        {% for row in results %}
                         <tr>
                             <td>
-                                <?= $allschedule['courseTitle']?>
+                            {{ row[3] }}
                             </td>
                             <td>
-                                <?= $allschedule['time']?>
+                            {{ row[5] }}
                             </td>
                             <td>
-                                <?= $allschedule['day']?>
+                            {{ row[4] }}
                             </td>
                             <td>
-                                <?= $allschedule['sem']?>
+                            {{ row[6] }}
                             </td>
                             <td>
-                                <?= $allschedule['status']?>
+                            {{ row[7] }}
                             </td>
 
                             <td>
-                            <a href="#?schedId=<?= $allschedule['schedId']; ?>" style="width:100%" class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#editSchedule" data-schedid="<?= $allschedule['schedId']; ?>">Edit</a>
+                            <a href="/update_instructor_schedule{{ row[0] }}" style="width:100%" class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#editSchedule{{ row[0] }}">View</a>
+                           
                             </td>
                         </tr>
+                        <!-- edit schedule -->
+                            <div class="modal fade" id="editSchedule{{ row[0] }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editScheduledropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="editScheduleLabel">Edit Schedule</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                <form id="editScheduleForm" action="{{ url_for('update_instructor_schedule') }}" method = "POST">
+                                    <div class="mb-3">
+                                        <label for="scheduleTime" class="form-label">Time:</label>
+                                        <input type="text" class="form-control" id="scheduleTime" name="time" value="{{row.4}}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="scheduleDate" class="form-label">Day:</label>
+                                        <input type="text" class="form-control" id="scheduleDay" name="day" value="{{row.5}}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="scheduleYear" class="form-label">Semester: </label>
+                                        <input type="text" class="form-control" id="scheduleSem" name="sem" value="{{row.6}}">
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                                    <select class="form-select" id="scheduleStatus" name="status" aria-label="Default select example">
+                                                        <option selected value = "{{row.7}}" required>{{row.7}}</option>
+                                                        <option value="Close">Close</option>
+                                                        <option value="Open">Open</option>
+                                                    </select>
+                                    </div>
 
-                     
+                                    
+                                    <input type="hidden" id="schedId" name="schedId" value="{{row.0}}">
+                                
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" name= "update" class="btn btn-primary">Save</button>
+                                </div>
+                                </form>
+                            
+                                </div>
+                            </div>
+                            </div>
+                    <!-- edit schedule -->
+                        {% endfor %}
                     </table>
                     </div>
                     </div>
@@ -208,51 +258,6 @@
     </div>
     </div>
    -->
-
-  <!-- edit schedule -->
-            <div class="modal fade" id="editSchedule" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editScheduledropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editScheduleLabel">Edit Schedule</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <form id="editScheduleForm">
-                    <div class="mb-3">
-                        <label for="scheduleTime" class="form-label">Time:</label>
-                        <input type="text" class="form-control" id="scheduleTime" name="time" >
-                    </div>
-                    <div class="mb-3">
-                        <label for="scheduleDate" class="form-label">Day:</label>
-                        <input type="text" class="form-control" id="scheduleDay" name="day" >
-                    </div>
-                    <div class="mb-3">
-                        <label for="scheduleYear" class="form-label">Semester: </label>
-                        <input type="text" class="form-control" id="scheduleSem" name="sem" >
-                    </div>
-                    <div class="mb-3">
-                    <label for="status" class="form-label">Status</label>
-                                    <select class="form-select" id="scheduleStatus" name="status" aria-label="Default select example">
-                                        <option selected value = "" required>select status</option>
-                                        <option value="Close">Close</option>
-                                        <option value="Open">Open</option>
-                                    </select>
-                    </div>
-
-                    
-                    <input type="hidden" id="schedId" name="schedId">
-                
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name= "update" class="btn btn-primary">Save</button>
-                </div>
-                </form>
-              
-                </div>
-            </div>
-            </div>
 
             <!-- Modal -->
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -286,18 +291,17 @@
                         </div>
 
                         <div class="modal-body">
-                            <form action="instructor_insertschedule.php" method="post">
+                            <form action="{{ url_for('insert_instructor_schedule') }}" method="post">
                                 <div class="mb-3">
-                                <input type="hidden" class="form-control" name = "userid" value = "<?php echo $userid;?>">
+                                <input type="hidden" class="form-control" name = "userid" value = "{{ user.userid }}">
+                                <input type="text" class="form-control" id="courseTitle" name = "courseTitle">
                                 <label for="level" class="form-label">Course</label>
-                                <select class="form-select"  id="courseSelect" name="courseId" onchange="updateTextbox()">
-                                    <option value="">Select a Course</option>
-                                    
+                                <select id="courseId" class="form-select" name="courseId">
+                                    <option value="">Select a course</option>
                                 </select>
+                              
                                 </div>
                                 
-                                <input type="hidden" id="courseTitle" name="courseTitle" readonly>
-                              
 
                                 <div class="mb-3">
                                     <label for="day" class="form-label">Day</label>
@@ -429,38 +433,25 @@
                     $('#myTable').DataTable();
 
                 });
-    
-    $(document).ready(function() {
-    $('a[data-bs-target="#editSchedule"]').on('click', function() {
-        var schedId = $(this).data('schedid');
-        $('#schedId').val(schedId); // Set the hidden input with schedId
 
-        // AJAX request to fetch schedule data
-        $.ajax({
-            url: 'instructor_schedule_fetch.php', // The PHP file that will handle the request
-            type: 'GET',
-            data: { schedId: schedId },
-            success: function(response) {
-                var data = JSON.parse(response);
-                $('#scheduleCourse').val(data.courseId);
-                $('#scheduleTime').val(data.time);
-                $('#scheduleDay').val(data.day);
-                $('#scheduleSem').val(data.sem);
-                $('#scheduleStatus').val(data.status);
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error: ' + status + error);
-            }
+                $(document).ready(function() {
+            $.getJSON('/get_course_titles', function(data) {
+                $.each(data, function(index, value) {
+                    $('#courseId').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+                });
+            });
+
+            $('#courseId').change(function() {
+                var selectedCourseId = $(this).val();
+                $.getJSON('/get_course_titles', function(data) {
+                    $.each(data, function(index, value) {
+                        if (value[0] === selectedCourseId) {
+                            $('#courseTitle').val(value[1]);
+                        }
+                    });
+                });
+            });
         });
-    });
-});
-
-function updateTextbox() {
-            var select = document.getElementById("courseSelect");
-            var textbox = document.getElementById("courseTitle");
-            textbox.value = select.options[select.selectedIndex].text;
-        }
-        
 </script>
 
 
