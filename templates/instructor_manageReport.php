@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BCLP System</title>
 
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link href="fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="DataTables/query.dataTables.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+    <link href="static/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="static/DataTables/query.dataTables.min.css" rel="stylesheet" type="text/css">
 
     <!--
    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" /> 
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="static/css/style.css">
     <style>
         .input-group-text {
             cursor: pointer;
@@ -46,61 +46,62 @@
         <!-- Sidebar -->
         <aside id="sidebar" class="sidebar-toggle">
 
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">
-                    <a class="navbar-brand ms-5 text-white" href="instructor_dashboard.php">BCLP System</a>
-                </div>
-            </nav>
-           <!-- Sidebar Navigation -->
-           <ul class="sidebar-nav p-0">
-                <a href="instructor_dashboard.php">
-                    <li class="sidebar-header">
-                        <span> DASHBOARD</span>
-                    </li>
+        <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid">
+            <a class="navbar-brand ms-5 text-white" href="/instructor_dashboard">BCLP System</a>
+          </div>
+        </nav>
+
+          <!-- Sidebar Navigation -->
+          <ul class="sidebar-nav p-0">
+            <a href="/instructor_dashboard">
+              <li class="sidebar-header">
+                 <span> DASHBOARD</span>
+              </li>
+            </a>
+            <hr class="text-white my-0">
+              <li class="sidebar-item">
+                <a href="/instructor_manageStudentTable" class="sidebar-link">
+                <i class="fas fa-user-graduate"></i>
+                    <span>Manage Student</span>
                 </a>
-                <hr class="text-white my-0">
-                <li class="sidebar-item">
-                    <a href="instructor_manageStudentTable.php" class="sidebar-link">
-                        <i class="fas fa-user-graduate"></i>
-                        <span>Manage Student</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="instructor_manageEnrollees.php" class="sidebar-link">
-                        <i class="fas fa-users"></i>
-                        <span>Manage Enrollees</span>
-                    </a>
-                </li>
+            </li>
+            <li class="sidebar-item">
+                <a href="/instructor_manageEnrollees" class="sidebar-link">
+                <i class="fas fa-users"></i>
+                    <span>Manage Enrollees</span>
+                </a>
+            </li>
 
-                <li class="sidebar-item">
-                    <a href="instructor_schedule.php" class="sidebar-link">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Manage Schedule</span>
-                    </a>
-                </li>
+            <li class="sidebar-item">
+                <a href="/instructor_schedule" class="sidebar-link">
+                <i class="fas fa-calendar-alt"></i>
+                    <span>Manage Schedule</span>
+                </a>
+            </li>
+           
 
-
-                <li class="sidebar-item">
-                    <a href="instructor_exam.php" class="sidebar-link">
-                        <i class="fas fa-sticky-note"></i>
-                        <span>Assessment Test</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
-                        <i class="fas fa-certificate"></i>
-                        <span>Certificates</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="instructor_manageReport.php" class="sidebar-link">
-                        <i class="fas fa-chart-area"></i>
-                        <span>Report</span>
-                    </a>
-                </li>
-
-            </ul>
-        </aside>
+            <li class="sidebar-item">
+                <a href="/instructor_exam" class="sidebar-link">
+                <i class="fas fa-sticky-note"></i>
+                    <span>Assessment Test</span>
+                </a>
+            </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+            <i class="fas fa-certificate"></i>
+                <span>Certificates</span>
+            </a>
+        </li>
+              <li class="sidebar-item">
+                  <a href="/instructor_manageReport" class="sidebar-link">
+                  <i class="fas fa-chart-area"></i>
+                      <span>Report</span>
+                  </a>
+              </li>
+           
+          </ul>
+      </aside>
 
 
         <div class="main">
@@ -114,17 +115,15 @@
                             aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <a class="navbar-brand ms-3 text-white " href="#">Barangay <?php echo $branch?> Computer Literacy Program</a>
+                        <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }}  Computer Literacy Program</a>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto pe-5">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img class="my-0 py-0" id="profile" src="img/<?php echo $_SESSION['image']; ?>"
-                                            title="<?php echo $_SESSION['image']; ?>">
-                                        <?php echo $_SESSION['userType']. " ". $_SESSION['username']?>
-                                    </a>
+                                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                                {{ user.userType }} {{ user.username }}
+                                </a>
                                     <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="instructor_changePass.php">Change Password</a></li>
                                         <li>
@@ -283,9 +282,9 @@
             </div>
             </div>
             <!--<script src="script.js"></script>-->
-            <script src="jquery/jquery-3.7.1.min.js"></script>
-            <script src="js/bootstrap.bundle.js"></script>
-            <script src="DataTables/jquery.dataTables.min.js"></script>
+            <script src="static/jquery/jquery-3.7.1.min.js"></script>
+            <script src="static/js/bootstrap.bundle.js"></script>
+            <script src="static/DataTables/jquery.dataTables.min.js"></script>
 
 
             <Script>
