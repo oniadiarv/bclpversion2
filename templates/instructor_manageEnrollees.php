@@ -29,6 +29,9 @@
             height: 50px
         }
    
+        td{
+            font-size: 14px;
+        }
     </style>
 </head>
 
