@@ -140,29 +140,28 @@
           </div>
         </nav>
         <!--Main Body-->
-          <main class="p-3">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                </ol>
-              </nav>
-              <div class="card shadow-lg mb-5 bg-body-tertiary rounded">
-                <div class="card-body bg-white">
-                  <div class="row">
-                    <div class="col-6 mt-5">
+        <main class="p-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+    </nav>
+    <div class="card shadow-lg mb-5 bg-body-tertiary rounded">
+        <div class="card-body bg-white">
+            <div class="row">
+                <div class="col-12 col-md-6 mt-5">
                     <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
-                    </div>
-
-                    <div class="col-6 m-0">
-                    <div
-                       id="myChart2" style="width:100%; max-width:600px; height:500px;">
-                    </div>
-                    </div>
-
-                  </div>
                 </div>
-              </div>
-          </main>     
+                <div class="col-12 col-md-6 mt-5">
+                    <canvas id="myChart2" style="width:100%;max-width:600px"></canvas>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</main>
+
+
           <!--End Main Body
       </div>
   </div>
@@ -228,30 +227,34 @@
         }
       });
 
-      google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+      var xValues = ["CRS01", "CRS02","CRS03"];
+      var yValues = [{{course1}}, {{course2}},{{course3}}];
+      var barColors = [
+        "#b91d47",
+        "#00aba9",
+        "#2b5797",
+        "#e8c3b9",
+        "#1e7145"
+      ];
 
-        function drawChart() {
-
-        // Set Data
-        const data = google.visualization.arrayToDataTable([
-          ['Contry', 'Mhl'],
-          ['Level 1: Basic Computer',{{course1}}],
-          ['Level 2: Photoshop',{{course2}}],
-          ['Level 3: Basic Web',{{course3}}]
-        ]);
-
-        // Set Options
-        const options = {
-          title:'Total Student per Level/Course',
-          is3D:true
-        };
-
-        // Draw
-        const chart = new google.visualization.PieChart(document.getElementById('myChart2'));
-        chart.draw(data, options);
-
+      new Chart("myChart2", {
+        type: "pie",
+        data: {
+          labels: xValues,
+          datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Total Student per Level/Course"
+          }
         }
+      });
+      
+      
   </Script>
   <script src="static/js/bootstrap.bundle.js"></script>
    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>-->
