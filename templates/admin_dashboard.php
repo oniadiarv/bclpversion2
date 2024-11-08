@@ -1,51 +1,3 @@
-<?php
- session_start(); 
-
- $host = "localhost";
- $user = "root";
- $password = "";
- $db = "bclp_db";
- $con = mysqli_connect($host,$user,$password,$db);
-
- $query = "select * from student where sex = 'Male'";
- $run = mysqli_query($con,$query);
-
- if($male_total = mysqli_num_rows($run)){
-    $male_total;
- }
-
- $query = "select * from student where sex = 'Female'";
- $run = mysqli_query($con,$query);
-
- if($female_total = mysqli_num_rows($run)){
-    $female_total;
- }
-
- $query = "select * from student where courseId = 'CRS01'";
- $run = mysqli_query($con,$query);
-
- if($crs1_total = mysqli_num_rows($run)){
-    $crs1_total;
- }
-
- $query = "select * from student where courseId = 'CRS02'";
- $run = mysqli_query($con,$query);
-
- if($crs2_total = mysqli_num_rows($run)){
-    $crs2_total;
- }
-
- $query = "select * from student where courseId = 'CRS03'";
- $run = mysqli_query($con,$query);
-
- if($crs3_total = mysqli_num_rows($run)){
-    $crs3_total;
- }
-
- 
- 
- ?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -74,7 +26,7 @@
     }
    </style>
   </head>
-  
+   
   <body>
     <div class="d-flex">
       <!-- Sidebar -->
@@ -194,10 +146,6 @@
                   <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                 </ol>
               </nav>
-<p id = "male">{{male}}</p>
-<p id = "female">{{female}}</p>
-
-
               <div class="card shadow-lg mb-5 bg-body-tertiary rounded">
                 <div class="card-body bg-white">
                   <div class="row">
@@ -251,8 +199,59 @@
     const toggler = document.querySelector(".toggler-btn");
       toggler.addEventListener("click", function () {
         document.querySelector("#sidebar").classList.toggle("collapsed");
+        });
+
+      var xValues = ["Male", "Female"];
+      var yValues = [{{male}}, {{female}}];
+      var barColors = [
+        "#b91d47",
+        "#00aba9",
+        "#2b5797",
+        "#e8c3b9",
+        "#1e7145"
+      ];
+
+      new Chart("myChart", {
+        type: "pie",
+        data: {
+          labels: xValues,
+          datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Total of Students - Male and Female"
+          }
+        }
       });
-  
+
+      google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+        // Set Data
+        const data = google.visualization.arrayToDataTable([
+          ['Contry', 'Mhl'],
+          ['Level 1: Basic Computer',{{course1}}],
+          ['Level 2: Photoshop',{{course2}}],
+          ['Level 3: Basic Web',{{course3}}]
+        ]);
+
+        // Set Options
+        const options = {
+          title:'Total Student per Level/Course',
+          is3D:true
+        };
+
+        // Draw
+        const chart = new google.visualization.PieChart(document.getElementById('myChart2'));
+        chart.draw(data, options);
+
+        }
   </Script>
   <script src="static/js/bootstrap.bundle.js"></script>
    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>-->
