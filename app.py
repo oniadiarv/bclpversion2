@@ -20,10 +20,11 @@ app.secret_key = 'your_secret_key'
 # Database connection
 def get_db_connection():
     connection = mysql.connector.connect(
-       host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-       user='mb08xvujtl5y5ks3',  # Default XAMPP username
-       password='trnq84lpad70qxa1',  # Default XAMPP password
-       database='maouhppvyslx9wyi'  
+        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user='mb08xvujtl5y5ks3',  # Default XAMPP username
+        password='trnq84lpad70qxa1',  # Default XAMPP password
+        database='maouhppvyslx9wyi' 
+  
     )
     return connection
 # for index    ########################################################### 
@@ -256,6 +257,7 @@ def validate_password(password):
 
 @app.route('/insert_admin_manageuser', methods=['POST'])
 def insert_admin_manageuser():
+    user = session.get('user')
     userType = request.form['userType']
     barangay = request.form['barangay']
     fname = request.form['fname']
@@ -294,6 +296,11 @@ def insert_admin_manageuser():
     cursor.execute('INSERT INTO users (userType, barangay, fname, mname, lname, email, image, username, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
                    (userType, barangay, fname, mname, lname, email, image.filename, username, hashed_password))
     conn.commit()
+
+    
+    cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Add New User', current_datetime))
+    conn.commit()
+
     cursor.close()
     conn.close()
     flash("New user is added Successfully!")
@@ -405,6 +412,7 @@ def instructor_manageStudentTable():
 @app.route('/update_instructor_manageStudentTable',methods=['POST','GET'])
 def update_instructor_manageStudentTable():
     if request.method == 'POST':
+        user = session.get('user')
         studentId = request.form['studentId']
         lastName = request.form['lastName']
         firstName = request.form['firstName']
@@ -428,8 +436,11 @@ def update_instructor_manageStudentTable():
         cursor.execute("""
             UPDATE student SET firstname =%s,middlename=%s,lastname=%s,suffix=%s,dob=%s,age=%s,sex=%s, status=%s,email=%s,contact=%s,educational=%s,       barangay=%s,district=%s,province=%s,completeAddress=%s,isStudent=%s where studentId = %s
         """,                   (firstName,   middleName,   lastName,    suffix,   dob,   age,   sex,    status,  email,  cellphone,   educationalAttainment,barangay,   district,   province,   completeAddress,   isStudent,         studentId))
+        cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Edit Student Status', current_datetime))
 
         connection.commit()
+
+        
         cursor.close()
         connection.close()
 
@@ -458,6 +469,7 @@ def insert_instructor_dashboard(id_data):
         SET isStudent = 'Student'
         WHERE enrolleeId = %s
     """, (id_data,))
+    
     connection.commit()
     cursor.close()
     connection.close()
@@ -544,6 +556,40 @@ def instructor_exam():
     cursor.close()
     connection.close()
     return render_template("instructor_exam.php",results = results,user=user)
+
+@app.route('/insert_instructor_exam',methods=['POST','GET'])
+def insert_instructor_exam():
+    user = session.get('user')
+    if request.method == 'POST':
+       question = request.form['question']
+       
+       connection = get_db_connection()
+       cursor = connection.cursor()
+       cursor.execute("INSERT INTO questions (question) VALUES (%s)", (question,))
+       
+
+       cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Create Question', current_datetime))
+       connection.commit()
+
+       cursor.close()
+       connection.close()
+    return redirect(url_for('instructor_exam'))
+
+@app.route('/delete_instructor_exam/<int:questionId>')
+def delete_instructor_exam(questionId):
+       user = session.get('user')
+       connection = get_db_connection()
+       cursor = connection.cursor()
+       cursor.execute("DELETE FROM questions WHERE questionId = %s", (questionId,))
+      
+
+       cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Delete Question', current_datetime))
+       connection.commit()
+
+       cursor.close()
+       connection.close()
+
+       return redirect(url_for('instructor_exam'))
 
 # for reports ############################################################
 @app.route("/instructor_manageReport")
