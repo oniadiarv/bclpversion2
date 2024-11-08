@@ -82,7 +82,7 @@
             </a>
         </li>
               <li class="sidebar-item">
-                  <a href="instructor_manageReport.php" class="sidebar-link">
+                  <a href="/instructor_manageReport" class="sidebar-link">
                   <i class="fas fa-chart-area"></i>
                       <span>Report</span>
                   </a>
@@ -102,17 +102,15 @@
                             aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <a class="navbar-brand ms-3 text-white " href="#">Barangay <?php echo $branch?> Computer Literacy Program</a>
+                        <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }} Computer Literacy Program</a>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto pe-5">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img id="profile" src="img/<?php echo $_SESSION['image']; ?>"
-                                            title="<?php echo $_SESSION['image']; ?>">
-                                        <?php echo $_SESSION['userType']. " ". $_SESSION['username']?>
-                                    </a>
+                                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                                {{ user.userType }} {{ user.username }}
+                                </a>
                                     <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="instructor_changePass.php">Change Password</a></li>
                                         <li>
@@ -152,9 +150,9 @@
                                 <hr>
                                 <div>
                                     <form action="" method="post">
-                                      
+                                    {% for row in results %}
                                             <h5>
-                                                <?= $i.". ".$allquestions['question']?>
+                                            {{ row[1] }}
                                             </h5>
                                             <div class="col-12">
                                                 <div class="row">
@@ -173,13 +171,13 @@
                                                         </label>
                                                     </div>
                                                     <div class="col-8">
-                                                        <a href="instructor_deleteexam.php?userid=<?= $allquestions['questionId']; ?>"
+                                                        <a href="/delete_instructor_exam/{{ row[0] }}"
                                                             class="btn btn-danger btn-md float-end m-1">Delete</a>
                                                     </div>
 
                                                 </div>
                                             </div>
-
+                                            {% endfor %}
                                       
                                     </form>
                                 </div>
