@@ -1,28 +1,3 @@
-<?php
- session_start(); 
- $db_host = 'localhost';
- $db_username = 'root';
- $db_password = '';
- $db_name = 'bclp_db';
- 
- // Create connection
- $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
- $username = $_SESSION['username']  ;
- $password = $_SESSION['password']  ;
-
-
- if(isset($_REQUEST['save'])){
-
-    $courseId = $_REQUEST['courseId'];
-    $level = $_REQUEST['level'];
-    $title = $_REQUEST['title'];
-    $desc = $_REQUEST['desc'];
-
-    $query = "UPDATE course SET courseLvl = '$level', courseTitle = '$title' , courseDesc = '$desc' where courseId  = '$courseId'";
-    $query_run = mysqli_query($conn,$query);
-    
-}
-?>
 <!doctype html>
 <html lang="en">
 
@@ -147,17 +122,14 @@
                             aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <a class="navbar-brand ms-3 text-white " href="#">Barangay Computer Literacy Program</a>
-
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ms-auto pe-5">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img class="my-0 py-0" id="profile" src="img/<?php echo $_SESSION['image']; ?>"
-                                            title="<?php echo $_SESSION['image']; ?>">
-                                        <?php echo $_SESSION['userType']. " ". $_SESSION['username']?>
-                                    </a>
+                        <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }}  Computer Literacy Program</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto pe-5">
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                                 {{ user.userType }} {{ user.username }}
+                                </a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="#">Profile</a></li>
                                         <li><a class="dropdown-item" href="#">Another action</a></li>
@@ -200,52 +172,29 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-
-                        <?php
-                  $host = "localhost";
-                  $user = "root";
-                  $password = "";
-                  $db = "bclp_db";
-               
-                  $con = mysqli_connect($host,$user,$password,$db);
-
-                    $stmt = "Select * from course";
-                        $result = mysqli_query ($con,$stmt);
-
-                        if (mysqli_num_rows($result)>0)
-                        {
-                        foreach( $result as $allcourses)
-                        {
-                          ?>
+                        {% for row in results %}
+                       
                         <tr>
                             <td>
-                                <?= $allcourses['courseId']?>
+                            {{ row[0] }}
                             </td>
                             <td>
-                                <?= $allcourses['courseLvl']?>
+                            {{ row[1] }}
                             </td>
                             <td>
-                                <?= $allcourses['courseTitle']?>
+                            {{ row[2] }}
                             </td>
                             <td>
-                                <?= $allcourses['courseDesc']?>
+                            {{ row[3] }}
                             </td>
-
-
-
 
                             <td>
                             <a href="admin_deleteCourse.php?userid=<?= $allcourses['courseId']; ?>" style="width:100%"
                                     class="btn btn-danger btn-md">Delete</a>
                             </td>
                         </tr>
-
-                        <?php
-                        }
-                        } else {
-                          echo "<h5> No Record Found </h5>";
-                        }
-                  ?>
+                        {% endfor %}
+                       
                     </table>
 
 
@@ -368,7 +317,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="bclp_logout.php">Logout</a>
+                            <a class="btn btn-primary" href="/bclp_logout">Logout</a>
                         </div>
                     </div>
                 </div>
