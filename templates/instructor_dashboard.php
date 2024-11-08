@@ -75,7 +75,7 @@
             </a>
         </li>
               <li class="sidebar-item">
-                  <a href="instructor_manageReport.php" class="sidebar-link">
+                  <a href="/instructor_manageReport" class="sidebar-link">
                   <i class="fas fa-chart-area"></i>
                       <span>Report</span>
                   </a>
@@ -94,14 +94,14 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand ms-3 text-white " href="#">Barangay <?php echo $branch?> Computer Literacy Program</a>
+            <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }}  Computer Literacy Program</a>
             
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto pe-5">
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img id = "profile" src="img/<?php echo $_SESSION['image']; ?>" title="<?php echo $_SESSION['image']; ?>">
-                  <?php echo $_SESSION['userType']. " ". $_SESSION['username'];?>
+                     <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                  {{ user.userType }} {{ user.username }}
                   </a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="instructor_changePass.php">Change Password</a></li>
@@ -133,7 +133,7 @@
                               <p class="card-text ">Total Number of Enrollees</p>
                             <h1 class="card-title text-end">
                             <span style="font-size: 40px"> 
-                            number
+                            {{enrollee}}
                                   </span>
                             </h1>
                             <div class="text-end">
@@ -149,7 +149,7 @@
                             <div class="card-body ">
                               <p class="card-text ">Total Number of Student</p>
                             <h1 class="card-title text-end">
-                            number
+                            {{student}}
                             </h1>
                             <div class="text-end">
                               <hr class="text-white">
@@ -163,7 +163,7 @@
                             <div class="card-body ">
                               <p class="card-text">Total Number of Class</p>
                                 <h1 class="card-title text-end">
-                                number
+                                {{classs}} 
                                 </h1>
                                 <div class="text-end">
                                   <hr class="text-white">
@@ -182,7 +182,7 @@
                           <div class="card-body">
                             <p class="card-text ">Total Number of Male</p>
                             <h1 class="card-title text-end">
-                            number
+                            {{male}} 
                             </h1>
                            <div class="text-end">
                             <hr class="text-white">
@@ -196,7 +196,7 @@
                           <div class="card-body ">
                             <p class="card-text ">Total Number of Female</p>
                             <h1 class="card-title text-end">
-                            number
+                            {{female}} 
                             </h1>
                             <div class="text-end">
                               <hr class="text-white">
@@ -210,7 +210,7 @@
                           <div class="card-body ">
                             <p class="card-text ">Total Number of Teenager</p>
                             <h1 class="card-title text-end">
-                            number
+                            {{teen}} 
                             </h1>
                             <div class="text-end">
                               <hr class="text-white">
@@ -224,7 +224,7 @@
                           <div class="card-body ">
                             <p class="card-text ">Total Number of Senior</p>
                             <h1 class="card-title text-end">
-                           number
+                            {{senior}} 
                             </h1>
                             <div class="text-end">
                               <hr class="text-white">
