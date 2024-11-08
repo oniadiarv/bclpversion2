@@ -29,15 +29,6 @@
             height: 50px
         }
    
-        #myTable{
-            table-layout:fixed;
-            width: 100%;
-        }
-        td{
-            font-size: 15px;
-        }
-
-   
     </style>
 </head>
 
