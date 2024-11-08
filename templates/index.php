@@ -136,7 +136,7 @@
 <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid">
         <div class="d-flex align-items-center">
-            <img src="static/webimg/logo.png" class="rounded me-2" alt="Logo" style="height: 40px;">
+            <img src="static/webimg/logo.png" class="rounded me-2" alt="Logo" >
             <a class="navbar-brand text-white" href="#">Barangay Computer Literacy Program</a>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -168,6 +168,7 @@
         </div>
     </div>
 </nav>
+
     <hr id="home">
     <div class="my-4">
         <p>.</p>
