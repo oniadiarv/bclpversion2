@@ -94,7 +94,7 @@
             </a>
         </li>
               <li class="sidebar-item">
-                  <a href="instructor_manageReport.php" class="sidebar-link">
+                  <a href="/instructor_manageReport" class="sidebar-link">
                   <i class="fas fa-chart-area"></i>
                       <span>Report</span>
                   </a>
@@ -114,17 +114,15 @@
                             aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <a class="navbar-brand ms-3 text-white " href="#">Barangay <?php echo $branch?> Computer Literacy Program</a>
+                        <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }}  Computer Literacy Program</a>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto pe-5">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img class="my-0 py-0" id="profile" src="img/<?php echo $_SESSION['image']; ?>"
-                                            title="<?php echo $_SESSION['image']; ?>">
-                                        <?php echo $_SESSION['userType']. " ". $_SESSION['username']?>
-                                    </a>
+                                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                                {{ user.userType }} {{ user.username }}
+                                </a>
                                     <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="instructor_changePass.php">Change Password</a></li>
                                         <li>
@@ -173,7 +171,7 @@
                         {% for row in results %}
                         <tr>
                             <td>
-                            {{ row[0] }}
+                            {{ row[2] }}
                             </td>
                             <td>
                                 {{ row[3] }}
@@ -183,7 +181,6 @@
                             </td>
                            
                             <td>
-                                <?= $allenrollee['firstname']?> <?= $allenrollee['middlename']?> <?= $allenrollee['lastname']?>  <?= $allenrollee['suffix']?>
                                 {{ row[6] }}
                                 {{ row[7] }}
                                 {{ row[5] }}
@@ -208,7 +205,7 @@
                           
  
                             <td>
-                                <a href="instructor_manageStudent.php?enrolleeId=<?= $allenrollee['enrolleeId']; ?>" style="width:100%"
+                                <a href="/insert_instructor_manageStudent/{{ row[0] }}" style="width:100%"
                                     class="btn btn-info btn-md">Accept</a>
                             </td>
                         </tr>
