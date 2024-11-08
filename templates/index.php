@@ -13,24 +13,43 @@
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
    <link rel="stylesheet" href="static/css/style.css">
     <style>
-        .carousel-caption {
-            bottom: 220px;
-            z-index: 2;
-        }
+          .carousel-caption {
+        bottom: 200px;
+        z-index: 2;
+    }
 
+    .carousel-caption h5 {
+        font-size: 70px; /* Adjusted font size */
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 25px;
+        line-height: 1.2; /* Adjust line height for better spacing */
+    }
+
+    .carousel-caption p {
+        width: 80%;
+        margin: auto;
+        font-size: 18px;
+        line-height: 1.9;
+    }
+
+    @media (max-width: 768px) {
         .carousel-caption h5 {
-            font-size: 70px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 25px;
+            font-size: 30; /* Smaller font size for tablets */
         }
+    }
 
-        .carousel-caption p {
-            width: 80%;
-            margin: auto;
-            font-size: 18px;
-            line-height: 1.9;
+    @media (max-width: 576px) {
+        .carousel-caption h5 {
+            font-size: 15px; /* Even smaller font size for mobile devices */
         }
+    }
+
+    .just{
+        text-align: justify;
+    }
+
+        
 
         .carousel-inner::before {
             content: '';
@@ -67,6 +86,48 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        @media (max-width: 991.98px) { /* Target devices with a width of 992px or less */
+    .navbar-toggler {
+        border-color: transparent; /* Optional: Remove border */
+    }
+    .navbar-toggler-icon {
+        background-image: none; /* Remove default background image */
+        width: 30px; /* Set width for the icon */
+        height: 30px; /* Set height for the icon */
+        position: relative; /* Positioning for pseudo-elements */
+    }
+    .navbar-toggler-icon:before,
+    .navbar-toggler-icon:after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 4px; /* Thickness of the bars */
+        background-color: white; /* Set color to white */
+        position: absolute;
+        left: 0;
+        transition: all 0.3s; /* Smooth transition */
+    }
+    .navbar-toggler-icon:before {
+        top: 0; /* Position the first bar */
+    }
+    .navbar-toggler-icon:after {
+        bottom: 0; /* Position the last bar */
+    }
+    .navbar-toggler-icon:before {
+        transform: translateY(15px); /* Adjust spacing */
+    }
+}
+
+     @media (max-width: 576px) {
+        .carousel-item img {
+            max-height: 400px;
+        }
+    } 
+
+
+
+
     </style>
 
 </head>
@@ -110,11 +171,20 @@
     <hr id="home">
     <div class="my-4">
         <p>.</p>
-        <h4>{{message}}</h4>
+        {%with messages = get_flashed_messages()%}
+                    {%if messages%}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>{{message}}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {%endfor%}
+                    {%endif%}
+                {%endwith%}
     </div>
 
     <div class="container-fluid">
-        <div class="mt-3 w-75 mx-auto" style="width: 50%; height: 100%;">
+        <div class="mt-5 w-75 mx-auto" style="width: 50%; height: 100%;">
             <div id="carouselExampleCaptions" class="carousel slide">
                 <section></section>
                 <div class="carousel-indicators">
@@ -128,7 +198,7 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <img src="static/webimg/post11.jpg" class="d-block w-100" style height="650px" alt="...">
-                        <div class="carousel-caption mt-4">
+                        <div class="carousel-caption">
                             <h5>BARANGAY COMPUTER LITERACY PROGRAM</h5>
                             <p>A Project from City Government of Pasig</p>
                             <p><a href="#about" class="btn btn-warning mt-3">Learn More</a></p>
@@ -186,7 +256,7 @@
                 <div class="col-lg-8 col-md-12 col-12 ps-lg-5 mt-md-5">
                     <div class="about-text">
                         <h2>The Barangay Computer Literacy Program (BCLP)</h2>
-                        <p> was launched on 19 April 1999 in selected barangays (districts) in Pasig City.
+                        <p class="just"> was launched on 19 April 1999 in selected barangays (districts) in Pasig City.
                             The Barangay Computer Literacy Program (BCLP) is a training facility program funded by the
                             City Government of Pasig, under the supervision
                             of BCLP Administrators and computer instructors. Its main objective is to improve computer
@@ -211,6 +281,8 @@
                             <ul>Level 2: Photo and Graphics Enhancement Program</ul>
                             <ul>Level 3: Internet Essentials and Basic Web Page Design</ul>
                         </ul>
+                        </p>
+                        <p class = "just">
                         The participants are aged between 16 years old up to Senior Citizens, and most of them are
                         unemployed. It encourages the participants to finish the program by awarding
                         certificates of completion. BCLP has helped hundreds of thousands of students, employed and
@@ -354,16 +426,18 @@
                         </ul>
                     </div>
 
-                    <center>
+                    <div class="d-flex justify-content-center mt-3">
                         <a href="https://web.facebook.com/profile.php?id=100064005733673" target="_blank">
-                            <img src="static/webimg/facebook.png" width="80px" height="50px"></a>
-
+                            <img src="static/webimg/facebook.png" width="80" height="70" alt="Facebook">
+                        </a>
                         <a href="https://www.gmail.com" target="_blank">
-                            <img src="static/webimg/gmail.png" width="100px" height="50px"></a>
-
+                            <img src="static/webimg/gmail.png" width="100" height="70" alt="Gmail">
+                        </a>
                         <a href="https://www.yahoo.com" target="_blank">
-                            <img src="static/webimg/yahoo.png" width="100px" height="50px"></a>
-                    </center>
+                            <img src="static/webimg/yahoo.png" width="100" height="70" alt="Yahoo">
+                        </a>
+                    </div>
+
                     <br>
                     <br>
                 </div>
@@ -493,7 +567,7 @@
                                             <option value=""></option>
                                             <option value="Elementary">Elementary</option>
                                             <option value="Highschool">Highschool</option>
-                                            <option value="SeniorHighschool">Senior Highschool</option>
+                                            <option value="Senior High School">Senior Highschool</option>
                                             <option value="College">College</option>
                                         </select>
                                     </div>
@@ -522,11 +596,11 @@
                                     <div class="col-sm-3 col-md-4 col-lg-4"><label for="barangay">Barangay</label>
                                         <select class="form-control" id="barangay" name="barangay" required>
                                         <option value=""></option>
-                                            <option value="BagongIlog">Bagong Ilog</option>
-                                            <option value="BagongKatipunan">Bagong Katipunan</option>
+                                            <option value="Bagong Ilog">Bagong Ilog</option>
+                                            <option value="Bagong Katipunan">Bagong Katipunan</option>
                                             <option value="Bambang">Bambang</option>
                                             <option value="Buting">Buting</option>
-                                            <option value="DelaPaz">Dela Paz</option>
+                                            <option value="Dela Paz">Dela Paz</option>
                                             <option value="Kalawaan">Kalawaan</option>
                                             <option value="Kapasigan">Kapasigan</option>
                                             <option value="Kapitolyo">Kapitolyo</option>
@@ -539,15 +613,15 @@
                                             <option value="Pineda">Pineda</option>
                                             <option value="Rosario">Rosario</option>
                                             <option value="Sagad">Sagad</option>
-                                            <option value="SanAntonio">San Antonio</option>
-                                            <option value="SanJoaquin">San Joaquin</option>
-                                            <option value="SanJose">San Jose</option>
-                                            <option value="SanMiguel">San Miguel</option>
-                                            <option value="SanNicolas">San Nicolas</option>
-                                            <option value="SantaCruz">Santa Cruz</option>
-                                            <option value="SantaLucia">Santa Lucia</option>
-                                            <option value="SantaRosa">Santa Rosa</option>
-                                            <option value="SantoTomas">Santo Tomas</option>
+                                            <option value="San Antonio">San Antonio</option>
+                                            <option value="San Joaquin">San Joaquin</option>
+                                            <option value="San Jose">San Jose</option>
+                                            <option value="San Miguel">San Miguel</option>
+                                            <option value="San Nicolas">San Nicolas</option>
+                                            <option value="Santa Cruz">Santa Cruz</option>
+                                            <option value="Santa Lucia">Santa Lucia</option>
+                                            <option value="Santa Rosa">Santa Rosa</option>
+                                            <option value="Santo Tomas">Santo Tomas</option>
                                             <option value="Santolan">Santolan</option>
                                             <option value="Sumilang">Sumilang</option>
                                             <option value="Ugong">Ugong</option>
@@ -556,8 +630,8 @@
                                     <div class="col-sm-3 col-md-4 col-lg-4"><label for="district">District</label>
                                         <select class="form-control" id="district" name="district" required>
                                         <option value=""></option>
-                                            <option value="District1">District 1</option>
-                                            <option value="District2">District 2</option>
+                                            <option value="District 1">District 1</option>
+                                            <option value="District 2">District 2</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-3 col-md-4 col-lg-4"><label for="province">City</label>
@@ -606,7 +680,7 @@
                 <div class="modal-body">
                     <!-- Terms and Conditions content -->
                     <h5>I. Collection of Personal Information</h5>
-                    <p>The BCLP enrollment system respects the privacy of individual's personal information. All
+                    <p class="just">The BCLP enrollment system respects the privacy of individual's personal information. All
                         data collected during enrollment process including but not limited to name, contact details,
                         and academic records, will be used solely for administrative purposes related to enrollment
                         and academic activities. The system will ensure confidentiality, integrity, and security of
@@ -615,15 +689,15 @@
                         correct and request deletion of their personal data stored in the system. By using the
                         enrollment system individuals consent to the collection, processing and storage of their
                         personal information in accordance with this privacy policy.</p>
-                    <p>Data protection is a matter of trust and your privacy is important to us. We shall therefore
+                    <p class="just">Data protection is a matter of trust and your privacy is important to us. We shall therefore
                         only use your name and other information, which relates to you in the manner set out in this
                         Privacy Policy.</p>
                     <h5>II. Use and Disclosure of Personal Information</h5>
-                    <p>When you enroll to submit it or otherwise provide us with your personal information through
+                    <p class="just">When you enroll to submit it or otherwise provide us with your personal information through
                         the platform, the personal information we collect may include your: Name, Address, Date of
                         Birth, Age, Sex, Class schedule, contact number, student photo, and educational background
                         that may be used to prevent fraud and help us to provide better services to you.</p>
-                    <p>We will only be to collect your personal information if you voluntarily submit the
+                    <p class="just">We will only be to collect your personal information if you voluntarily submit the
                         information to us. If you choose not to submit your personal information to us or subsequently
                         withdraw your consent to our use of your personal information, we may not be able to provide
                         you with our services. You may access and update your personal information submitted to us at
