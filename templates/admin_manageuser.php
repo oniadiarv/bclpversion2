@@ -1,10 +1,3 @@
-<?php
- session_start();
- 
- if (isset($_GET['alert'])) {
-  echo '<script>alert("' . $_GET['alert'] . '");</script>';
-}
-?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -32,6 +25,7 @@
     .navbar-brand{
       height: 50px
     }
+
   </style>
   </head>
   
@@ -125,15 +119,14 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand ms-3 text-white " href="#">Barangay Computer Literacy Program</a>
-            
+            <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }}  Computer Literacy Program</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto pe-5">
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="my-0 py-0" id = "profile" src="img/<?php echo $_SESSION['image']; ?>" title="<?php echo $_SESSION['image']; ?>">
-                  <?php echo $_SESSION['userType']. " ". $_SESSION['username']?>
-                  </a>
+                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                                 {{ user.userType }} {{ user.username }}
+                                </a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     <li><a class="dropdown-item" href="#">Another action</a></li>
@@ -154,13 +147,27 @@
                 <li class="breadcrumb-item active" aria-current="page">Manage Users</li>
               </ol>
             </nav>
+            {%with messages = get_flashed_messages()%}
+                    {%if messages%}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>{{message}}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {%endfor%}
+                    {%endif%}
+                {%endwith%}
 
               <div class="container-fluid border  shadow-lg bg-body-tertiary rounded">
                 <div class="col-2 ms-auto p-2">
-                <a href = "admin_addUser.php">
-               <input  type="button" class="btn btn-primary" style="width:100%" name="submit" value="+ Add Users">
-               </a>
+                <a href = "/" class="btn btn-primary mb-3" style="width:100%" data-bs-toggle="modal" data-bs-target="#addusers" aria-label="Set Schedule">
+                <i class="fas fa-plus"></i>Add User</a>
+               </a> 
                 </div>
+
+                <div class="card shadow-lg mb-5 bg-body-tertiary rounded">
+                <div class="card-body bg-white text-black ">
+                <div class="table-responsive"> 
              
                 <table id = "myTable" class="table table-hover pt-1">
                   <thead class='table-primary'>
@@ -175,47 +182,105 @@
                           <th>Action</th>
                     </tr>
                   </thead>
-                  
-                  <?php
-                  $host = "localhost";
-                  $user = "root";
-                  $password = "";
-                  $db = "bclp_db";
-               
-                  $con = mysqli_connect($host,$user,$password,$db);
-
-                    $stmt = "Select * from users";
-                        $result = mysqli_query ($con,$stmt);
-
-                        if (mysqli_num_rows($result)>0)
-                        {
-                        foreach( $result as $allusers)
-                        {
-                          ?>
+                  {% for row in results %}
                           <tr>
-                          <td><?= $allusers['userType']?></td>
-                          <td><?= $allusers['fname']?></td>
-                          <td><?= $allusers['mname']?></td>
-                          <td><?= $allusers['lname']?></td>
-                          <td><?= $allusers['email']?></td>
-                          <td><?= $allusers['username']?></td>
+                          <td>{{ row[1] }}</td>
+                          <td>{{ row[3] }}</td>
+                          <td>{{ row[4] }}</td>
+                          <td>{{ row[5] }}</td>
+                          <td>{{ row[6] }}</td>
+                          <td>{{ row[8] }}</td>
                          
-                          
-
                           <td> 
-                          <a href="admin_editUser.php?userid=<?= $allusers['userid']; ?>"style="width:100%" class="btn btn-info btn-md">Edit</a>
+                         <!-- <a href="/admin_editUser?userid=<?= ##$allusers['userid']; ?>"style="width:100%" class="btn btn-info btn-md">Edit</a> -->
+                          <a href="/update_admin_manageuser{{ row[0] }}" style="width:100%" class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#editUser{{ row[0] }}">Edit</a>
+                          
                         </td>
                           </tr>
+                           <!-- edit user -->
+                           <div class="modal fade" id="editUser{{ row[0] }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editScheduledropLabel" aria-hidden="true">
+                            <div class="modal-dialog  modal-xl">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="editScheduleLabel">Edit User's Information</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                <form action="{{ url_for('update_admin_manageuser') }}"  method="POST" enctype="multipart/form-data">
+                                    <div class="row  m-3" >
+                                        <div class = "col-3">
+                                            <label for="userType" class="form-label">User Type</label>
+                                            <select class="form-select pb-1" id="userType" name="userType" aria-label="Default select example">
+                                            <option selected >{{row.1}}</option>
+                                            <option value="Instructor">Instructor</option>
+                                            <option value="Administrator">Administrator</option>
+                                            </select>
+                                        </div>
 
-                          <?php
-                        }
-                        } else {
-                          echo "<h5> No Record Found </h5>";
-                        }
-                  ?>
+                                        <div class="col-3">
+                                            <label for="barangay" class="form-label">Barangay</label>
+                                            <input type="text" class="form-control" id="barangay" name="barangay" value="{{row.2}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row m-3">
+                                        <div class="col-4 mt-3">
+                                            <label for="fname" class="form-label">First Name</label>
+                                            <input type="text" class="form-control" id="fname" name="fname" value="{{row.3}}">
+                                        </div>
+
+                                        
+                                        <div class="col-4 mt-3">
+                                            <label for="mname" class="form-label">Middle Name</label>
+                                            <input type="text" class="form-control" id="mname" name="mname" value="{{row.4}}">
+                                        </div>
+
+                                        
+                                        <div class="col-4 mt-3">
+                                            <label for="lname" class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" id="lname" name="lname" value="{{row.5}}">
+                                        </div>
+                                        </div>
+
+                                                    
+                                    <div class="row m-3">
+                                        <div class="col-4 mt-3">
+                                            <label for="email" class="form-label">Email Address</label>
+                                            <input type="email" class="form-control" id="email" name="email" value="{{row.6}}" >
+                                        </div>
+
+                                        
+                                        <div class="col-4 mt-3">
+                                            <label for="username" class="form-label">Username</label>
+                                            <input type="text" class="form-control" id="username" name="username" value="{{row.8}}" >
+                                        </div>
+
+                                    </div>
+                                    <div class="col-4 m-4">
+                                            <label for="image" class="form-label">Uploaded Picture </label><br>
+                                            <img src="static/img/{{row.7}}" width = 100 title="{{row.7}}">
+                                            <input type="file" class="form-control" name="image" id = "image" accept=".jpg, .jpeg, .png" value="{{row.7}}" required>
+                                        </div>
+
+                                        <input type="hidden" id="schedId" name="userid" value="{{row.0}}">
+
+                                      <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                          <button type="submit" name="update" class="btn btn-primary">Update</button>
+                                      </div>
+                   </form>
+                            
+                                </div>
+                            </div>
+                            </div>
+                    <!-- edit user -->
+                          {% endfor %}
+                 
                     </table>
 
-               
+                    </div>
+              </div>
+              </div>
               </div>
 
           </main>     
@@ -234,32 +299,39 @@
     </div>
    -->
  <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="addusers" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Users</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <form action="/insert_admin_manageuser" method="POST" enctype="multipart/form-data">
+      {%with messages = get_flashed_messages()%}
+                    {%if messages%}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>{{message}}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
 
-      <form action="" method="POST" enctype="multipart/form-data">
+                        {%endfor%}
+                    {%endif%}
+                {%endwith%}
       <div class="modal-body">
-        
           <div class="row">
           <div class = "col-3">
             <label for="userType" class="form-label">User Type</label>
             <select class="form-select pb-1" id="userType" name="userType" aria-label="Default select example"required>
-              <option selected value="">input User Type</option>
+              <option selected value="">User Type</option>
               <option value="level1">Instructor</option>
               <option value="level2">Administrator</option>
             </select>
-            <span class="text-danger"><?php if(!empty($userType_error)){ echo $userType_error; } ?></span>
           </div>
 
           <div class="col-3">
             <label for="barangay" class="form-label">Barangay</label>
             <input type="text" class="form-control" id="barangay" name="barangay" placeholder="Middle" required>
-            <span class="text-danger"><?php if(!empty($barangay_error)){ echo $barangay_error; } ?></span>
           </div>
 
           </div>
@@ -268,21 +340,18 @@
           <div class="col-4 mt-3">
             <label for="fname" class="form-label">First Name</label>
             <input type="text" class="form-control" id="fname" name="fname" placeholder="First " required>
-            <span class="text-danger"><?php if(!empty($fname_error)){ echo $fname_error; } ?></span>
           </div>
 
           
           <div class="col-4 mt-3">
             <label for="mname" class="form-label">Middle Name</label>
             <input type="text" class="form-control" id="mname" name="mname" placeholder="Middle" required>
-            <span class="text-danger"><?php if(!empty($mname_error)){ echo $mname_error; } ?></span>
           </div>
 
           
           <div class="col-4 mt-3">
             <label for="lname" class="form-label">Last Name</label>
             <input type="text" class="form-control" id="lname" name="lname" placeholder="Last" required>
-            <span class="text-danger"><?php if(!empty($lname_error)){ echo $lname_error; } ?></span>
           </div>
           </div>
 
@@ -290,20 +359,17 @@
               <div class="col-4 mt-3">
                 <label for="email" class="form-label">Email Address</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="@email" required>
-                <span class="text-danger"><?php if(!empty($email_error)){ echo $email_error; } ?></span>
               </div>
 
               
               <div class="col-4 mt-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="username" required>
-                <span class="text-danger"><?php if(!empty($username_error)){ echo $username_error; } ?></span>
               </div>
 
               <div class="col-4 mt-3">
               <label for="image" class="form-label">Upload Picture </label><br>
                       <input type="file" class="form-control" name="image" id = "image" accept=".jpg, .jpeg, .png" value="" required>
-                      <span class="text-danger"><?php if(!empty($image_error)){ echo $image_error; } ?></span>
               </div>
           </div>
 
@@ -316,7 +382,6 @@
                     <i class="fa fa-eye"></i>
                     </div>
                 </div>
-                <span class="text-danger"><?php if(!empty($match_error)){ echo $match_error; } ?></span><br>
             <label for="confirm" class="form-label mt-3">Confirm Password</label>
                  <div class="form-group input-group">
                     <input type="password" class="form-control" id="confirm" name="confirm" placeholder="Confirm password" required>
@@ -327,7 +392,6 @@
               </div>
                    
                 </div>
-                <span class="text-danger"><?php if(!empty($pass_error)){ echo $pass_error; } ?></span>
           </div>
          
 
@@ -384,7 +448,7 @@
           <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a class="btn btn-primary" href="bclp_logout.php">Logout</a>
+        <a class="btn btn-primary" href="/bclp_logout">Logout</a>
       </div>
     </div>
   </div>
