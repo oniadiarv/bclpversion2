@@ -443,7 +443,7 @@ def instructor_manageEnrollees():
     user = session.get('user')
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM enrollee WHERE isStudent= 'Enrollee' AND branch = %s",(user['barangay'],))
+    cursor.execute("SELECT * FROM student ORDER BY enrolleeId DESC LIMIT 1 WHERE isStudent= 'Student' AND branch = %s",(user['barangay'],))
     results = cursor.fetchall()
     cursor.close()
     connection.close()
