@@ -1,39 +1,3 @@
-<?php
- session_start(); 
- if (isset($_GET['alert'])) {
-    echo '<script>alert("' . $_GET['alert'] . '");</script>';
-}
-
- $db_host = 'localhost';
- $db_username = 'root';
- $db_password = '';
- $db_name = 'bclp_db';
- 
- // Create connection
- $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
- $username = $_SESSION['username']  ;
- $password = $_SESSION['password']  ;
-
- // Check connection
- if ($conn->connect_error) {
-     die("Connection failed: " . $conn->connect_error);
- }
-
-
-/**for sorting data */
-$stmt = mysqli_query($conn, "SELECT * from users where username = '$username' and password = '$password' ");
-            $numrow_stmt= mysqli_num_rows($stmt);
-           
-            if($numrow_stmt > 0)
-            {
-                while($row = mysqli_fetch_array($stmt)){
-                    $_SESSION['email'] = $row['email'];
-                    $_SESSION['userType'] = $row['userType'];
-                    $_SESSION['userid'] = $row['userid'];
-                }     
-            } 
-           $userid = $_SESSION['userid'] ;
-?>
 <!doctype html>
 <html lang="en">
 
@@ -158,17 +122,14 @@ $stmt = mysqli_query($conn, "SELECT * from users where username = '$username' an
                             aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <a class="navbar-brand ms-3 text-white " href="#">Barangay Computer Literacy Program</a>
-
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ms-auto pe-5">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img class="my-0 py-0" id="profile" src="img/<?php echo $_SESSION['image']; ?>"
-                                            title="<?php echo $_SESSION['image']; ?>">
-                                        <?php echo $_SESSION['userType']. " ". $_SESSION['username']?>
-                                    </a>
+                        <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }}  Computer Literacy Program</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto pe-5">
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img id = "profile" src="static/img/{{ user.image }}" alt="User Image">
+                                 {{ user.userType }} {{ user.username }}
+                                </a>
                                     <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="instructor_changePass.php">Change Password</a></li>
                                         <li>
@@ -206,47 +167,28 @@ $stmt = mysqli_query($conn, "SELECT * from users where username = '$username' an
                                 <th>Date</th>
                             </tr>
                         </thead>
-
-                        <?php
-                        $host = "localhost";
-                        $user = "root";
-                        $password = "";
-                        $db = "bclp_db";
-                        $con = mysqli_connect($host,$user,$password,$db);
-                            $stmt = "Select * from activity_log";
-                        $result = mysqli_query ($con,$stmt);
-
-                        if (mysqli_num_rows($result)>0)
-                        {
-                        foreach( $result as $alllogs)
-                        
-                        {
-                          ?>
+                        {% for row in results %}
+                       
                         <tr>
                             <td>
-                                <?=  $alllogs['userid']?>
+                            {{ row[1] }}
                             </td>
                             <td>
-                                <?=  $alllogs['userType']?>
+                            {{ row[2] }}
                             </td>
                             <td>
-                                <?=  $alllogs['Name']?>
+                            {{ row[3] }}
                             </td>
                             <td>
-                                <?=  $alllogs['activity']?>
+                            {{ row[4] }}
                             </td>
                            
                             <td>
-                                <?=  $alllogs['date']?>
+                            {{ row[5] }}
                             </td>
                         </tr>
 
-                        <?php
-                        }
-                        } else {
-                          echo "<h5> No Record Found </h5>";
-                        }
-                  ?>
+                        {% endfor %}
                     </table>
 
 
@@ -303,7 +245,7 @@ $stmt = mysqli_query($conn, "SELECT * from users where username = '$username' an
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="bclp_logout.php">Logout</a>
+                            <a class="btn btn-primary" href="/bclp_logout">Logout</a>
                         </div>
                     </div>
                 </div>
