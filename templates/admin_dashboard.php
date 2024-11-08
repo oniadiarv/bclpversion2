@@ -247,66 +247,13 @@
 </div>
 
   <!--<script src="script.js"></script>-->
-  <SCript>
+  <Script>
     const toggler = document.querySelector(".toggler-btn");
       toggler.addEventListener("click", function () {
         document.querySelector("#sidebar").classList.toggle("collapsed");
-        var maleCount = document.getElementById('male').value;
-        var femaleCount = document.getElementById('female').value;
       });
-////////////////////////////////////////////////////////////////////////////////
-      var xValues = ["Male", "Female"];
-      var yValues = [maleCount, femaleCount];
-      var barColors = [
-        "#b91d47",
-        "#00aba9",
-        "#2b5797",
-        "#e8c3b9",
-        "#1e7145"
-      ];
-
-      new Chart("myChart", {
-        type: "pie",
-        data: {
-          labels: xValues,
-          datasets: [{
-            backgroundColor: barColors,
-            data: yValues
-          }]
-        },
-        options: {
-          title: {
-            display: true,
-            text: "Total of Students - Male and Female"
-          }
-        }
-      });
-////////////////////////////////////////////////////////////////////
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-
-        // Set Data
-        const data = google.visualization.arrayToDataTable([
-          ['Contry', 'Mhl'],
-          ['Level 1: Basic Computer',<?php echo "$crs1_total";?>],
-          ['Level 2: Photoshop',<?php echo "$crs2_total";?>],
-          ['Level 3: Basic Web',<?php echo "$crs3_total";?>]
-        ]);
-
-        // Set Options
-        const options = {
-          title:'Total Student per Level/Course',
-          is3D:true
-        };
-
-        // Draw
-        const chart = new google.visualization.PieChart(document.getElementById('myChart2'));
-        chart.draw(data, options);
-
-        }
-  </SCript>
+  
+  </Script>
   <script src="static/js/bootstrap.bundle.js"></script>
    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>-->
   </body>
