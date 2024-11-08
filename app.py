@@ -20,11 +20,15 @@ app.secret_key = 'your_secret_key'
 # Database connection
 def get_db_connection():
     connection = mysql.connector.connect(
-        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        user='mb08xvujtl5y5ks3',  # Default XAMPP username
-        password='trnq84lpad70qxa1',  # Default XAMPP password
-        database='maouhppvyslx9wyi' 
-  
+ # host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+       # user='mb08xvujtl5y5ks3',  # Default XAMPP username
+       # password='trnq84lpad70qxa1',  # Default XAMPP password
+       # database='maouhppvyslx9wyi' 
+
+        host='localhost',
+        user='root',  # Default XAMPP username
+        password='',  # Default XAMPP password
+        database='bclp_db'  
     )
     return connection
 # for index    ########################################################### 
@@ -213,10 +217,22 @@ def admin_dashboard():
     female = cursor.fetchone()
     female_count = female[0]
 
+    cursor.execute("SELECT COUNT(*) AS total_males FROM student where courseId = 'CRS01'")
+    course1 = cursor.fetchone()
+    course1_count = course1[0]
+    
+    cursor.execute("SELECT COUNT(*) AS total_males FROM student where courseId = 'CRS02'")
+    course2 = cursor.fetchone()
+    course2_count = course2[0]
+    
+    cursor.execute("SELECT COUNT(*) AS total_males FROM student where courseId = 'CRS03'")
+    course3 = cursor.fetchone()
+    course3_count = course3[0]
+
     cursor.close()
     connection.close()
 
-    return render_template("admin_dashboard.php",user=user,male=male_count,female = female_count)
+    return render_template("admin_dashboard.php",user=user,male=male_count,female = female_count,course1=course1_count,course2=course2_count,course3=course3_count)
 
 # admin codes - adding courses ##############################################################
 @app.route("/admin_addCourse")
