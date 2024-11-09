@@ -295,7 +295,7 @@
                             <form action="{{ url_for('insert_instructor_schedule') }}" method="post">
                                 <div class="mb-3">
                                 <input type="hidden" class="form-control" name = "userid" value = "{{ user.userid }}">
-                                <input type="text" class="form-control" id="courseTitle" name = "courseTitle">
+                                <input type="hidden" class="form-control" id="courseTitle" name = "courseTitle">
                                 <label for="level" class="form-label">Course</label>
                                 <select id="courseId" class="form-select" name="courseId">
                                     <option value="">Select a course</option>
@@ -435,7 +435,7 @@
 
                 });
 
-                $(document).ready(function() {
+            $(document).ready(function() {
             $.getJSON('/get_course_titles', function(data) {
                 $.each(data, function(index, value) {
                     $('#courseId').append('<option value="' + value[0] + '">' + value[1] + '</option>');
