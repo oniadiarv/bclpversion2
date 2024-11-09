@@ -564,12 +564,14 @@
 
                 });
 
-        function calculateAge() {
-        const dob = new Date(document.getElementById("dob").value);
-        const now = new Date();
-        const age = Math.floor((now - dob) / (365.25 * 24 * 60 * 60 * 1000));
-        document.getElementById("age").value = age;
-        }
+                function calculateAge() {
+                const dob = new Date(document.getElementById("dob").value);
+                const now = new Date();
+                const age = Math.floor((now - dob) / (365.25 * 24 * 60 * 60 * 1000));
+                document.getElementById("age").value = age;
+                }
+
+        
 
             </Script>
 
