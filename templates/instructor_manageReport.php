@@ -147,21 +147,15 @@
                 </ol>
                 </nav>
                     <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
-                    <div class="card-body bg-white text-black ">
-                    <div class="table-responsive">
-<div class="col-12 mb-2">
+                    <div class="col-12 mb-2">
     <div class="row">
         <div class="col-12">
-        <form method="POST" action="">
-                    <input type="hidden" value = "<?php echo $fname;?> <?php echo $mname;?> <?php echo $lname;?>" id = "name">
-                        <input type="hidden" value = "<?php echo $batch;?>" name = "year">
+        <form method="POST" action="{{ url_for('search_instructor_manageReport') }}">
+        <input type="hidden" value = "{{ user.fname }} {{ user.mname }} {{ user.lname }}" id = "name">
                         <div class="row">
                         <div class="col-sm-3 col-md-4 col-lg-3">
-                        <select class="form-control" name="course">
+                        <select class="form-control" id = "course" name="course">
                             <option value="">Select Course</option>
-                            <option value="CRS01">CRS01</option>
-                            <option value="CRS02">CRS02</option>
-                            <option value="CRS03">CRS03</option>
                         </select>
                         </div>
                         <div class="col-sm-3 col-md-4 col-lg-3">
@@ -173,7 +167,6 @@
                         </select>
                         </div>
                         <div class="col-sm-3 col-md-4 col-lg-3">
-                        <input type = "hidden" value ="<?php echo $branch;?>" name="barangay">
                         <select class="form-control" name="status">
                             <option value="student">Student</option>
                             <option value="Graduate">Graduate</option>
@@ -189,15 +182,15 @@
         </div>
     </div>
 </div>
+                    <div class="card-body bg-white text-black ">
+                    <div class="table-responsive">
                     
-
+{% if results %}
                     <table class="table table-hover pt-1">
                         <thead class='table-primary'>
                             <tr >
                                 <th>STUDENT ID</th>
-                                <th>SURNAME</th>
-                                <th>FIRSTNAME</th>
-                                <th>MIDDLENAME</th>
+                                <th>Name</th>
                                 <th>ADDRESS</th>
                                 <th>EMAIL ADDRESS</th>
                                 <th>CONTACT</th>
@@ -213,9 +206,26 @@
 
                             </tr>
                         </thead>
-                           
+                        {% for row in results %}
+                        <tr>
+                            <td> {{ row[0] }}</td>
+                            <td> {{ row[5] }} {{ row[6] }} {{ row[7] }}</td>
+                            <td> {{ row[19] }} {{ row[16] }} {{ row[18] }}</td>
+                            <td> {{ row[13] }}</td>
+                            <td> {{ row[14] }}</td>
+                            <td> {{ row[10] }}</td>
+                            <td> {{ row[9] }}</td>
+                            <td> {{ row[11] }}</td>
+                            <td> {{ row[12] }}</td>
+                            <td> {{ row[15] }}</td>
+                            <td> {{ row[3] }}</td>
+                            <td> {{ row[2] }}</td>
+                            <td> {{ row[22] }}</td>
+                            <td> {{ row[23] }}</td>
+                        </tr>
+                        {% endfor %}
                     </table>
-                            
+                    {% endif %}  
                     </div>
                      </div>
                      <div class="col-12">
@@ -346,7 +356,7 @@
                     }
                 }
 
-                function printTable() {
+            function printTable() {
             var printContents = document.body.innerHTML;
             var tableContents = document.querySelector('table').outerHTML;
             var userName = document.getElementById("name").value;
@@ -382,6 +392,14 @@
             link.download = 'BCLP_Report.xls';
             link.click();
         }
+
+        $(document).ready(function() {
+            $.getJSON('/get_course', function(data) {
+                $.each(data, function(index, value) {
+                    $('#course').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+                });
+            });
+        })
             </Script>
 
 
