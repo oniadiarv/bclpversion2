@@ -29,9 +29,12 @@
             height: 50px
         }
    
+   
         td{
             font-size: 14px;
         }
+
+   
     </style>
 </head>
 
@@ -153,7 +156,7 @@
                     
                     <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
                     <div class="card-body bg-white text-black ">
-                    <div class="table-responsive">  
+                    <div class="table-responsive">   
                     <table id="myTable" class="table table-hover pt-1">
                         <thead class='table-primary'>
                             <tr >
