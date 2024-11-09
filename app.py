@@ -20,12 +20,14 @@ app.secret_key = 'your_secret_key'
 # Database connection
 def get_db_connection():
     connection = mysql.connector.connect(
-        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        user='mb08xvujtl5y5ks3',  # Default XAMPP username
-        password='trnq84lpad70qxa1',  # Default XAMPP password
-        database='maouhppvyslx9wyi'  
+       host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+       user='mb08xvujtl5y5ks3',  # Default XAMPP username
+       password='trnq84lpad70qxa1',  # Default XAMPP password
+       database='maouhppvyslx9wyi' 
     )
-    return connection
+    return connection    
+   
+
 # for index    ########################################################### 
 @app.route("/")
 def bclp():
@@ -604,9 +606,39 @@ def delete_instructor_exam(questionId):
 
 # for reports ############################################################
 @app.route("/instructor_manageReport")
-def nstructor_manageReport():
+def instructor_manageReport():
     user = session.get('user')
     return render_template("instructor_manageReport.php",user=user)
+
+@app.route('/get_course')
+def get_course():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT DISTINCT courseId FROM student")
+    courseId = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(courseId)
+
+@app.route('/search_instructor_manageReport',methods=['POST','GET'])
+def search_instructor_manageReport():
+    user = session.get('user')
+    if request.method == 'POST':
+        course = request.form['course']
+        sem = request.form['sem']
+        status = request.form['status']
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM student WHERE courseId = %s AND sem = %s AND isStudent = %s AND branch = %s AND batch = %s ", (course,sem,status,user['barangay'],current_datetime))
+        results = cursor.fetchall()
+        connection.commit()
+        cursor.close()
+        connection.close()
+       
+        #return redirect(url_for('instructor_manageReport',results = results))
+        return render_template("instructor_manageReport.php",results = results,user=user)
+       
     
 
 # log out structure ###############################################
