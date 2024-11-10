@@ -20,10 +20,10 @@ app.secret_key = 'your_secret_key'
 # Database connection
 def get_db_connection():
     connection = mysql.connector.connect(
-       host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-       user='mb08xvujtl5y5ks3',  # Default XAMPP username
-       password='trnq84lpad70qxa1',  # Default XAMPP password
-       database='maouhppvyslx9wyi' 
+        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user='mb08xvujtl5y5ks3',  # Default XAMPP username
+        password='trnq84lpad70qxa1',  # Default XAMPP password
+        database='maouhppvyslx9wyi' 
     )
     return connection    
    
@@ -243,6 +243,45 @@ def admin_addCourse():
     connection.close()
     
     return render_template("admin_addCourse.php",results=results,user=user)
+
+@app.route('/admin_add_course', methods=['POST'])
+def admin_add_course():
+    user = session.get('user')
+    course_lvl = request.form['courseLvl']
+    course_title = request.form['courseTitle']
+    course_desc = request.form['courseDesc']
+    
+    # Generate courseId
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT COUNT(*) FROM course")
+    count = cursor.fetchone()[0]
+    course_id = f'CRS{count + 1:02d}'
+
+    cursor.execute("INSERT INTO course (courseId, courseLvl, courseTitle, courseDesc) VALUES (%s, %s, %s, %s)",
+                   (course_id, course_lvl, course_title, course_desc))
+    
+    cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Add Course', current_datetime))
+    connection.commit()
+    cursor.close()
+    connection.close()
+    
+    return redirect(url_for('admin_addCourse'))
+
+@app.route('/admin_delete_course/<string:courseId>')
+def admin_delete_course(courseId):
+       user = session.get('user')
+       connection = get_db_connection()
+       cursor = connection.cursor()
+       cursor.execute("DELETE FROM course WHERE courseId = %s", (courseId,))
+
+       cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Delete Course', current_datetime))
+       connection.commit()
+
+       cursor.close()
+       connection.close()
+
+       return redirect(url_for('admin_addCourse'))
 
 # admin codes  ##############################################################
 @app.route("/admin_manageuser")
