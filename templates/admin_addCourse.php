@@ -189,8 +189,7 @@
                             </td>
 
                             <td>
-                            <a href="admin_deleteCourse.php?userid=<?= $allcourses['courseId']; ?>" style="width:100%"
-                                    class="btn btn-danger btn-md">Delete</a>
+                            <a href="/admin_delete_course/{{ row[0] }}" class="btn btn-danger btn-md float-end m-1">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -282,18 +281,18 @@
                         </div>
 
                         <div class="modal-body">
-                            <form action="admin_insertCourse.php" method="post">
+                            <form action="/admin_add_course" method="POST">
                                 <div class="mb-3">
                                     <label for="level" class="form-label">Course Level</label>
-                                    <input type="text" class="form-control" id="level" name="level">
+                                    <input type="text" class="form-control" id="level" name="courseLvl">
                                 </div>
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Course Title</label>
-                                    <input type="text" class="form-control" id="title" name="title">
+                                    <input type="text" class="form-control" id="title" name="courseTitle">
                                 </div>
                                 <div class="mb-3">
                                     <label for="desc" class="form-label">Course Description</label>
-                                    <textarea class="form-control" id="desc" rows="6" name="desc"></textarea>
+                                    <textarea class="form-control" id="desc" rows="6" name="courseDesc"></textarea>
                                 </div>
                         </div>
                         <div class="modal-footer">
