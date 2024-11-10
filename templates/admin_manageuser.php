@@ -324,8 +324,8 @@
             <label for="userType" class="form-label">User Type</label>
             <select class="form-select pb-1" id="userType" name="userType" aria-label="Default select example"required>
               <option selected value="">User Type</option>
-              <option value="level1">Instructor</option>
-              <option value="level2">Administrator</option>
+              <option value="Instructor">Instructor</option>
+              <option value="Administrator">Administrator</option>
             </select>
           </div>
 
