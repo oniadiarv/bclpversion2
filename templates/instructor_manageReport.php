@@ -61,7 +61,7 @@
             </a>
             <hr class="text-white my-0">
               <li class="sidebar-item">
-                <a href="/instructor_manageStudentTable" class="sidebar-link">
+                <a href="/instructor_search_manageStudentTable" class="sidebar-link">
                 <i class="fas fa-user-graduate"></i>
                     <span>Manage Student</span>
                 </a>
@@ -125,10 +125,6 @@
                                 {{ user.userType }} {{ user.username }}
                                 </a>
                                     <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="instructor_changePass.php">Change Password</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
                                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                 data-bs-target="#logout">Log Out</a></li>
                                     </ul>
