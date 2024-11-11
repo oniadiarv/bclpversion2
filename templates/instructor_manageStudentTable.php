@@ -51,7 +51,7 @@
             </a>
             <hr class="text-white my-0">
               <li class="sidebar-item">
-                <a href="/instructor_manageStudentTable" class="sidebar-link">
+                <a href="/instructor_search_manageStudentTable" class="sidebar-link">
                 <i class="fas fa-user-graduate"></i>
                     <span>Manage Student</span>
                 </a>
@@ -115,10 +115,6 @@
                                 {{ user.userType }} {{ user.username }}
                                 </a>
                                     <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="instructor_changePass.php">Change Password</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
                                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                 data-bs-target="#logout">Log Out</a></li>
                                     </ul>
@@ -139,13 +135,13 @@
             
                 <div class="card shadow-lg p-3 mb-1 bg-body-tertiary rounded">
                     <div class="card-body bg-white text-black ">
-                        <form method = "post">
+                        <form action ="/instructor_search_manageStudentTable"method = "post">
                             <div class="col-12">
                                   <div class="row">
                                     <div class = "col-6"></div>
                                         <div class="col-sm-2 col-md-4 col-lg-2">
                                                 <select class="form-control" id="sem" name="sem" required>
-                                                <option value=""></option>
+                                                <option value="">Select Semester</option>
                                                     <option value="1st">1st sem</option>
                                                     <option value="2nd">2nd sem</option>
                                                     <option value="3rd">3rd sem</option>
@@ -153,17 +149,15 @@
                                             </div>
                                             <div class="col-sm-2 col-md-4 col-lg-2">
                                                 <select class="form-control" id="course" name="course" required>
-                                                <option value=""></option>
-                                                    <option value="CRS01">Course 1</option>
-                                                    <option value="CRS02">Course 2</option>
-                                                    <option value="CRS03">Course 3</option>
+                                                <option value=""> Select Course</option>
+                                                    <option value="CRS01">Basic, Intermediate & Advance Computer Concepts</option>
+                                                    <option value="CRS02">Photo and Graphic Enhancement Program</option>
+                                                    <option value="CRS03">Internet Essetials & Basic, Webpage Design</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-4 col-md-2 col-lg-2">
                                             <button type="submit" name = "search" class="btn btn-primary"  style="width:100%"> SEARCH</button>
                                             </div>
-                                            <input type="hidden" name="year" placeholder="Year" value = "<?php echo $year?>" required>
-                                            <input type="hidden" name="barangay" placeholder="Barangay" value = "<?php echo $branch?>" required>
                                     </div>
                                 </div>
                             </form>
@@ -571,9 +565,35 @@
                 document.getElementById("age").value = age;
                 }
 
+        const topicData = {{ topic_percentages | safe }};
+        const labels = Object.keys(topicData);
+        const data = Object.values(topicData);
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Topic Percentages',
+                    data: data,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
         
 
             </Script>
+            
 
 
             <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>-->
