@@ -5,6 +5,7 @@ import churn as ch
 import json 
 import datetime
 import os
+from collections import Counter
 
 # Get the current date and time
 current_datetime = datetime.datetime.now()
@@ -452,12 +453,53 @@ def instructor_manageStudentTable():
     user = session.get('user')
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM student WHERE isStudent= 'Student' AND branch = %s",(user['barangay'],))
+    cursor.execute("SELECT * FROM student WHERE isStudent= 'Student' AND branch = %s", (user['barangay'],))
+    cursor.execute("SELECT DISTINCT courseTitle FROM course")
+    title = cursor.fetchall()
     results = cursor.fetchall()
     cursor.close()
     connection.close()
 
-    return render_template("instructor_manageStudentTable.php",results = results,user=user)
+    # Store results and user in session
+    session['results'] = results
+    session['user'] = user
+    session['title'] = title
+
+    return render_template("instructor_manageStudentTable.php", results=results, user=user,title = title)
+
+@app.route('/instructor_search_manageStudentTable', methods=['GET', 'POST'])
+def instructor_search_manageStudentTable():
+    user = session.get('user')
+    title = session.get('title')
+    results = session.get('results')  # Retrieve results from session
+
+    if request.method == 'POST':
+        sem = request.form['sem']
+        courseID = request.form['course']
+        
+        # Fetching data from the database
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT recommend FROM student WHERE branch=%s AND sem=%s AND courseID=%s AND batch=%s", 
+                       (user['barangay'], sem, courseID, current_year))
+        result = cursor.fetchall()
+        cursor.close()
+        connection.close()
+
+        # Counting topics
+        topics = []
+        for (recommend,) in result:
+            if recommend != "good":
+                topics.extend(recommend.split(','))
+
+        topic_count = Counter(topics)
+        total_count = sum(topic_count.values())
+        topic_percentages = {topic: (count / total_count) * 100 for topic, count in topic_count.items()}
+
+        return render_template('instructor_manageStudentTable.php', topic_percentages=json.dumps(topic_percentages), user=user,results=results,title = title)
+
+    return render_template('instructor_manageStudentTable.php', topic_percentages=None, user=user,results=results,title = title)
+
 
 # instructor - updating student info ###############################################################
 
