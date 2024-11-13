@@ -88,7 +88,7 @@
                 </a>
             </li>
           <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="/instructor_certificate" class="sidebar-link">
             <i class="fas fa-certificate"></i>
                 <span>Certificates</span>
             </a>
@@ -138,7 +138,7 @@
             <main class="p-3">
                 <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="instructor_dashboard.php">Dashboard</a></li>
+                  <li class="breadcrumb-item"><a href="/instructor_dashboard">Dashboard</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Manage Report</li>
                 </ol>
                 </nav>
@@ -149,12 +149,12 @@
         <form method="POST" action="{{ url_for('search_instructor_manageReport') }}">
         <input type="hidden" value = "{{ user.fname }} {{ user.mname }} {{ user.lname }}" id = "name">
                         <div class="row">
-                        <div class="col-sm-3 col-md-4 col-lg-3">
+                        <div class="col-sm-3 col-md-4 col-lg-3 mb-1">
                         <select class="form-control" id = "course" name="course">
                             <option value="">Select Course</option>
                         </select>
                         </div>
-                        <div class="col-sm-3 col-md-4 col-lg-3">
+                        <div class="col-sm-3 col-md-4 col-lg-3 mb-1">
                         <select class="form-control" name="sem">
                             <option value="">Select Semester</option>
                             <option value="1st">1st Semester</option>
@@ -162,7 +162,7 @@
                             <option value="3rd">3rd Semester</option>
                         </select>
                         </div>
-                        <div class="col-sm-3 col-md-4 col-lg-3">
+                        <div class="col-sm-3 col-md-4 col-lg-3 mb-1">
                         <select class="form-control" name="status">
                             <option value="student">Student</option>
                             <option value="Graduate">Graduate</option>
@@ -198,14 +198,12 @@
                                 <th>COURSE ID</th>
                                 <th>SEMESTER</th>
                                 <th>BATCH/YEAR</th>
-                                <th>STATUS</th>
-
                             </tr>
                         </thead>
                         {% for row in results %}
                         <tr>
                             <td> {{ row[0] }}</td>
-                            <td> {{ row[5] }} {{ row[6] }} {{ row[7] }}</td>
+                            <td> {{ row[5] }} {{ row[6] }}. {{ row[7] }}</td>
                             <td> {{ row[19] }} {{ row[16] }} {{ row[18] }}</td>
                             <td> {{ row[13] }}</td>
                             <td> {{ row[14] }}</td>
@@ -217,7 +215,6 @@
                             <td> {{ row[3] }}</td>
                             <td> {{ row[2] }}</td>
                             <td> {{ row[22] }}</td>
-                            <td> {{ row[23] }}</td>
                         </tr>
                         {% endfor %}
                     </table>
