@@ -85,7 +85,7 @@
                 </a>
             </li>
           <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="/instructor_certificate" class="sidebar-link">
             <i class="fas fa-certificate"></i>
                 <span>Certificates</span>
             </a>
@@ -134,7 +134,7 @@
             <main class="p-3">
                 <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="instructor_dashboard.php">Dashboard</a></li>
+                  <li class="breadcrumb-item"><a href="/instructor_dashboard">Dashboard</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Manage Enrollee's</li>
                 </ol>
                 </nav>
@@ -184,9 +184,8 @@
                            
                             <td>
                                 {{ row[6] }}
-                                {{ row[7] }}
+                                {{ row[7] }}.
                                 {{ row[5] }}
-                                
                             </td>
                             <td>
                                 {{ row[11] }}
