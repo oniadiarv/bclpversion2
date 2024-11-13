@@ -21,10 +21,10 @@ app.secret_key = 'your_secret_key'
 # Database connection
 def get_db_connection():
     connection = mysql.connector.connect(
-        host='o3iyl77734b9n3tg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        user='mb08xvujtl5y5ks3',  # Default XAMPP username
-        password='trnq84lpad70qxa1',  # Default XAMPP password
-        database='maouhppvyslx9wyi' 
+        host='o61qijqeuqnj9chh.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user='hzev9wej29jyyz1k',  # Default XAMPP username
+        password='h5hbjdr8d6eqc45g',  # Default XAMPP password
+        database='xblrx9x291z0omzg'  
     )
     return connection    
    
@@ -406,6 +406,137 @@ def admin_auditTrail():
 
     return render_template("admin_auditTrail.php",results=results,user=user)
 
+# admin codes - notification ###############################################################
+@app.route("/admin_notification")
+def admin_notification():
+    user = session.get('user')
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM announcement ")
+    results = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    
+    return render_template("admin_notification.php",results=results,user=user)
+
+@app.route('/admin_add_notification', methods=['POST'])
+def add_notification():
+    message = request.form['message']
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute('INSERT INTO announcement (message) VALUES (%s)', (message,))
+    connection.commit()
+    cursor.close()
+    connection.close()
+    flash('Notification added successfully!')
+    return redirect(url_for('admin_notification'))
+
+@app.route('/admin_delete_notification/<int:announceId>')
+def admin_delete_notification(announceId):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute('DELETE FROM announcement WHERE announceId = %s', (announceId,))
+    connection.commit()
+    cursor.close()
+    connection.close()
+    flash('Notification deleted successfully!')
+    return redirect(url_for('admin_notification'))
+
+# admin codes - report ###############################################################
+@app.route("/admin_manageReport")
+def admin_manageReport():
+    user = session.get('user')
+    return render_template("admin_manageReport.php",user=user)
+
+@app.route('/admin_get_course')
+def admin_get_course():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT DISTINCT courseId FROM student")
+    courseId = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(courseId)
+
+@app.route('/admin_get_site')
+def admin_get_site():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT DISTINCT branch FROM student")
+    branch = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(branch)
+
+@app.route('/search_admin_manageReport',methods=['POST','GET'])
+def search_admin_manageReport():
+    user = session.get('user')
+    if request.method == 'POST':
+        course = request.form['course']
+        sem = request.form['sem']
+        status = request.form['status']
+        batch = request.form['batch']
+        branch = request.form['branch']
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM student WHERE courseId = %s AND sem = %s AND isStudent = %s AND branch = %s AND batch = %s ", (course,sem,status,branch,batch))
+        results = cursor.fetchall()
+        connection.commit()
+        cursor.close()
+        connection.close()
+       
+        #return redirect(url_for('instructor_manageReport',results = results))
+        return render_template("admin_manageReport.php",results = results,user=user)
+
+ # admin codes - setting ###############################################################   
+@app.route("/admin_setting")
+def admin_setting():
+    user = session.get('user')
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM certFormat ")
+    results = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    return render_template("admin_setting.php",user=user,results = results)
+
+@app.route('/admin_get_users')
+def admin_get_user():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT DISTINCT username FROM users")
+    users = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(users)
+
+@app.route('/update_admin_setting_saveCert',methods=['POST','GET'])
+def update_admin_setting_saveCert():
+    if request.method == 'POST':
+        user = session.get('user')
+        certId = request.form['certId']
+        certificate = request.files['certificate']
+
+        image_path = os.path.join('static/webimg', certificate.filename)
+        certificate.save(image_path)
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("""
+            UPDATE certformat SET image=%s where certId = %s
+        """,                (certificate.filename,certId))
+
+        cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Update Certificate', current_datetime))
+
+        connection.commit()
+        cursor.close()
+        connection.close()
+        flash('Certificate Format updated successfully!')
+        return redirect(url_for('admin_setting'))
+
+
 # instructor codes ###############################################################
 
 @app.route("/instructor_dashboard")
@@ -442,36 +573,27 @@ def instructor_dashboard():
     senior = cursor.fetchone()
     senior_count = senior[0]
 
+    cursor.execute("SELECT * FROM announcement")
+    announcement = cursor.fetchall()
+    senior_count = senior[0]
+
     cursor.close()
     connection.close()
 
-    return render_template("instructor_dashboard.php",user=user,male=male_count,female = female_count,teen = teen_count,senior = senior_count,classs = classs_count,student = student_count,enrollee= enrollee_count)
+    return render_template("instructor_dashboard.php",user=user,male=male_count,female = female_count,teen = teen_count,senior = senior_count,classs = classs_count,student = student_count,enrollee= enrollee_count,announcement=announcement )
 
 # display data from student table ##################################################################
-@app.route("/instructor_manageStudentTable")
-def instructor_manageStudentTable():
+@app.route('/instructor_search_manageStudentTable', methods=['GET', 'POST'])
+def instructor_search_manageStudentTable():
     user = session.get('user')
     connection = get_db_connection()
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM student WHERE isStudent= 'Student' AND branch = %s", (user['barangay'],))
+    results = cursor.fetchall()
     cursor.execute("SELECT DISTINCT courseTitle FROM course")
     title = cursor.fetchall()
-    results = cursor.fetchall()
     cursor.close()
     connection.close()
-
-    # Store results and user in session
-    session['results'] = results
-    session['user'] = user
-    session['title'] = title
-
-    return render_template("instructor_manageStudentTable.php", results=results, user=user,title = title)
-
-@app.route('/instructor_search_manageStudentTable', methods=['GET', 'POST'])
-def instructor_search_manageStudentTable():
-    user = session.get('user')
-    title = session.get('title')
-    results = session.get('results')  # Retrieve results from session
 
     if request.method == 'POST':
         sem = request.form['sem']
@@ -531,14 +653,12 @@ def update_instructor_manageStudentTable():
             UPDATE student SET firstname =%s,middlename=%s,lastname=%s,suffix=%s,dob=%s,age=%s,sex=%s, status=%s,email=%s,contact=%s,educational=%s,       barangay=%s,district=%s,province=%s,completeAddress=%s,isStudent=%s where studentId = %s
         """,                   (firstName,   middleName,   lastName,    suffix,   dob,   age,   sex,    status,  email,  cellphone,   educationalAttainment,barangay,   district,   province,   completeAddress,   isStudent,         studentId))
         cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Edit Student Status', current_datetime))
-
         connection.commit()
-
-        
         cursor.close()
         connection.close()
 
-        return redirect(url_for('instructor_manageStudentTable'))
+        flash("Student Data is Updated !")
+        return redirect(url_for('instructor_search_manageStudentTable'))
 
 # instructor - display data from enrollees and insert data from enrollee to student table ################
 
@@ -555,6 +675,7 @@ def instructor_manageEnrollees():
 
 @app.route("/insert_instructor_manageStudent/<string:id_data>", methods = ['GET'])
 def insert_instructor_dashboard(id_data):
+    user = session.get('user')
     connection = get_db_connection()
     cursor = connection.cursor()
     cursor.execute("INSERT INTO student (branch,sem,courseId,time,firstname,middlename,lastname,suffix,dob,age,sex,status,email,contact,educational,barangay,district,province,completeAddress,score,recommend,batch,isStudent) SELECT branch,sem,courseId,time,firstname,middlename,lastname,suffix,dob,age,sex,status,email,contact,educational,barangay,district,province,completeAddress,score,recommend,batch,'Student' FROM enrollee WHERE enrolleeId=%s", (id_data,))
@@ -563,7 +684,8 @@ def insert_instructor_dashboard(id_data):
         SET isStudent = 'Student'
         WHERE enrolleeId = %s
     """, (id_data,))
-    
+
+    cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Accept Student Application', current_datetime))
     connection.commit()
     cursor.close()
     connection.close()
@@ -598,6 +720,7 @@ def get_course_titles():
 
 @app.route('/insert_instructor_schedule',methods=['POST','GET'])
 def insert_instructor_schedule():
+    user = session.get('user')
     if request.method == 'POST':
         userid = request.form['userid']
         courseId = request.form['courseId']
@@ -610,6 +733,7 @@ def insert_instructor_schedule():
         connection = get_db_connection()
         cursor = connection.cursor()
         cursor.execute("INSERT INTO schedule (userid,courseId,courseTitle,time,day,sem,status) VALUES (%s, %s, %s,%s, %s,%s, %s)", (userid ,courseId,courseTitle,time,day,sem,status))
+        cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Add Schedule', current_datetime))
         connection.commit()
         cursor.close()
         connection.close()
@@ -619,6 +743,7 @@ def insert_instructor_schedule():
 
 @app.route('/update_instructor_schedule',methods=['POST','GET'])
 def update_instructor_schedule():
+    user = session.get('user')
     if request.method == 'POST':
         schedId = request.form['schedId']
         time = request.form['time']
@@ -631,6 +756,7 @@ def update_instructor_schedule():
         cursor.execute("""
             UPDATE schedule SET time =%s, day=%s, sem=%s, status=%s where schedId = %s
         """,(time,day,sem,status,schedId))
+        cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Update Schedule', current_datetime))
 
         connection.commit()
         cursor.close()
@@ -684,6 +810,40 @@ def delete_instructor_exam(questionId):
        connection.close()
 
        return redirect(url_for('instructor_exam'))
+
+# for certificates ############################################################
+@app.route('/instructor_certificate', methods=['GET', 'POST'])
+def instructor_certificate():
+    user = session.get('user')
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT DISTINCT courseTitle FROM course")
+    title = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    
+    return render_template('instructor_certificate.php', user=user,title = title)
+
+@app.route('/instructor_search_certificate', methods=['GET', 'POST'])
+def instructor_search_certificate():
+ if request.method == 'POST':
+        user = session.get('user')
+        batch = request.form['batch']
+        courseID = request.form['course']
+        
+        # Fetching data from the database
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM student WHERE isStudent= 'Graduate' AND branch=%s AND courseID=%s AND batch=%s", 
+                       (user['barangay'], courseID, batch))
+        results = cursor.fetchall()
+        cursor.execute('SELECT * FROM certformat')
+        certs = cursor.fetchall()
+        cursor.close()
+        connection.close()
+
+        return render_template('instructor_certificate.php', user=user,results=results,certs = certs)
+    
 
 # for reports ############################################################
 @app.route("/instructor_manageReport")
