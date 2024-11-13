@@ -19,6 +19,9 @@
      .navbar-brand{
       height: 50px
     }
+    .indented{
+      text-indent: 40px;
+    }
    </style>
   </head>
   
@@ -69,7 +72,7 @@
                 </a>
             </li>
           <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="/instructor_certificate" class="sidebar-link">
             <i class="fas fa-certificate"></i>
                 <span>Certificates</span>
             </a>
@@ -122,6 +125,15 @@
 
               <div class="container-fluid">
                 
+              <div class="alert alert-light alert-dismissible fade show" role="alert">
+                
+ <h3><strong>ANNOUNCEMENT</strong></h3>  <br>
+  {% for row in announcement %}
+ <p class = "indented">{{row[1]}}</p> 
+{%endfor%}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
         <br>
 
                   <div class="row">
