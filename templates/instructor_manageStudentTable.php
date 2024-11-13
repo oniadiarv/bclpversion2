@@ -78,7 +78,7 @@
                 </a>
             </li>
           <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="/instructor_certificate" class="sidebar-link">
             <i class="fas fa-certificate"></i>
                 <span>Certificates</span>
             </a>
@@ -128,10 +128,20 @@
             <main class="p-3">
                 <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="instructor_dashboard.php">Dashboard</a></li>
+                  <li class="breadcrumb-item"><a href="/instructor_dashboard">Dashboard</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Manage Enrollee's</li>
                 </ol>
                 </nav>
+                {%with messages = get_flashed_messages()%}
+                    {%if messages%}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>{{message}}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {%endfor%}
+                    {%endif%}
+                {%endwith%}
             
                 <div class="card shadow-lg p-3 mb-1 bg-body-tertiary rounded">
                     <div class="card-body bg-white text-black ">
@@ -139,7 +149,7 @@
                             <div class="col-12">
                                   <div class="row">
                                     <div class = "col-6"></div>
-                                        <div class="col-sm-2 col-md-4 col-lg-2">
+                                        <div class="col-sm-2 col-md-4 col-lg-2 mb-1">
                                                 <select class="form-control" id="sem" name="sem" required>
                                                 <option value="">Select Semester</option>
                                                     <option value="1st">1st sem</option>
@@ -147,7 +157,7 @@
                                                     <option value="3rd">3rd sem</option>
                                                 </select>
                                             </div>
-                                            <div class="col-sm-2 col-md-4 col-lg-2">
+                                            <div class="col-sm-2 col-md-4 col-lg-2 mb-1">
                                                 <select class="form-control" id="course" name="course" required>
                                                 <option value=""> Select Course</option>
                                                     <option value="CRS01">Basic, Intermediate & Advance Computer Concepts</option>
@@ -200,7 +210,7 @@
                            
                             <td>
                                 {{ row[5] }}
-                                {{ row[6] }}
+                                {{ row[6] }}.
                                 {{ row[7] }}
                             </td>
                             <td>
@@ -281,7 +291,7 @@
                                                                     <option value="I">I</option>
                                                                     <option value="II">II</option>
                                                                     <option value="III">III</option>
-                                                                    <option value="N/A">N/A</option>
+                                                                    <option value=" ">N/A</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -400,13 +410,7 @@
                                                                     <option value="Drop-Out">Drop-Out</option>
                                                                 </select>
                                                     </div>
-
-
                                                 </div>
-
-                                                <input type="hidden" id="studentId" name="studentId">
-
-
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                     <button type="submit" name = "update" class="btn btn-primary">Update</button>
