@@ -69,37 +69,21 @@
             </li>
 
             <li class="sidebar-item">
-                <a href="#" class="sidebar-link">
+                <a href="/admin_manageReport" class="sidebar-link">
                 <i class="fas fa-print"></i>
                     <span>See all Reports</span>
                 </a>
             </li>
-  <!--
-            <li class="sidebar-item">
-              <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                  data-bs-target="#exam" aria-expanded="true" aria-controls="exam">
-                  <i class="far fa-sticky-note"></i>
-                  <span>See all Reports</span>
-              </a>
-              <ul id="exam" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                  <li class="sidebar-item ps-3">
-                      <a href="#" class="sidebar-link text-black" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Assessment</a>
-                  </li>
-                  <li class="sidebar-item ps-3">
-                      <a href="instructor_exam.html" class="sidebar-link text-black">Manage Assessment</a>
-                  </li>
-              </ul>
-          </li>
--->
+
           <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="/admin_notification" class="sidebar-link">
             <i class="fas fa-envelope"></i>
                 <span>Notification</span>
             </a>
         </li>
             
               <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">
+                  <a href="/admin_setting" class="sidebar-link">
                   <i class="fas fa-cogs"></i>
                       <span>Setting</span>
                   </a>
@@ -118,7 +102,7 @@
               <span class="navbar-toggler-icon"></span>
             </button>
 
-            <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }}  Computer Literacy Program</a>
+            <a class="navbar-brand ms-3 text-white " href="#">Barangay Computer Literacy Program</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto pe-5">
                 <li class="nav-item dropdown">
@@ -128,9 +112,6 @@
                                 </a>
                                 
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logout">Log Out</a></li>
                   </ul>
                 </li>
@@ -176,6 +157,7 @@
     </div>
     </div>
    -->
+    
 
     <!--Logout Modal-->
     <div class="modal fade" id="logout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
