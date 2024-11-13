@@ -511,7 +511,7 @@
                                             <option value="I">I</option>
                                             <option value="II">II</option>
                                             <option value="III">III</option>
-                                            <option value="N/A">N/A</option>
+                                            <option value=" ">N/A</option>
                                         </select>
                                     </div>
                                 </div>
