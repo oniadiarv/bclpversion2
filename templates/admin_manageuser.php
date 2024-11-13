@@ -35,79 +35,62 @@
       <aside id="sidebar" class="sidebar-toggle">
 
         <nav class="navbar navbar-expand-lg">
-          <div class="container-fluid">
-            <a class="navbar-brand ms-5 text-white" href="#">BCLP System</a>
-          </div>
+            <div class="container-fluid">
+                <a class="navbar-brand ms-5 text-white" href="#">BCLP System</a>
+            </div>
         </nav>
-
-         <!-- Sidebar Navigation -->
-         <ul class="sidebar-nav p-0">
-            <a href="/admin_dashboard">
-              <li class="sidebar-header">
-                 <span> DASHBOARD</span>
-              </li>
-            </a>
-            <hr class="text-white my-0">
-
-            <li class="sidebar-item">
-              <a href="/admin_addCourse" class="sidebar-link">
-              <i class="fas fa-tasks"></i>
-                  <span>Manage Course</span>
-              </a>
+        <!-- Sidebar Navigation -->
+        <ul class="sidebar-nav p-0">
+        <a href="/admin_dashboard">
+          <li class="sidebar-header">
+            <span> DASHBOARD</span>
           </li>
+        </a>
+        <hr class="text-white my-0">
 
-            <li class="sidebar-item">
-                <a href="/admin_manageuser" class="sidebar-link">
-                <i class="far fa-user"></i>
-                    <span>Manage Users</span>
-                </a>
-            </li>
+        <li class="sidebar-item">
+          <a href="/admin_addCourse" class="sidebar-link">
+          <i class="fas fa-tasks"></i>
+              <span>Manage Course</span>
+          </a>
+        </li>
 
-            <li class="sidebar-item">
-                <a href="/admin_auditTrail" class="sidebar-link">
-                <i class="fas fa-file-signature"></i>
-                    <span>Audit Trail</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link">
-                <i class="fas fa-print"></i>
-                    <span>See all Reports</span>
-                </a>
-            </li>
-  <!--
-            <li class="sidebar-item">
-              <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                  data-bs-target="#exam" aria-expanded="true" aria-controls="exam">
-                  <i class="far fa-sticky-note"></i>
-                  <span>See all Reports</span>
-              </a>
-              <ul id="exam" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                  <li class="sidebar-item ps-3">
-                      <a href="#" class="sidebar-link text-black" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Assessment</a>
-                  </li>
-                  <li class="sidebar-item ps-3">
-                      <a href="instructor_exam.html" class="sidebar-link text-black">Manage Assessment</a>
-                  </li>
-              </ul>
-          </li>
--->
-          <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
-            <i class="fas fa-envelope"></i>
-                <span>Notification</span>
+        <li class="sidebar-item">
+            <a href="/admin_manageuser" class="sidebar-link">
+            <i class="far fa-user"></i>
+                <span>Manage Users</span>
             </a>
         </li>
-            
-              <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">
-                  <i class="fas fa-cogs"></i>
-                      <span>Setting</span>
-                  </a>
-              </li>
-          </ul>
-      </aside>
+
+        <li class="sidebar-item">
+            <a href="/admin_auditTrail" class="sidebar-link">
+            <i class="fas fa-file-signature"></i>
+                <span>Audit Trail</span>
+            </a>
+        </li>
+
+        <li class="sidebar-item">
+            <a href="/admin_manageReport" class="sidebar-link">
+            <i class="fas fa-print"></i>
+                <span>See all Reports</span>
+            </a>
+        </li>
+
+            <li class="sidebar-item">
+                <a href="/admin_notification" class="sidebar-link">
+                    <i class="fas fa-envelope"></i>
+                    <span>Notification</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="/admin_setting" class="sidebar-link">
+                    <i class="fas fa-cogs"></i>
+                    <span>Setting</span>
+                </a>
+            </li>
+        </ul>
+        </aside>
 
       
       <div class="main">
@@ -119,7 +102,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand ms-3 text-white " href="#">Barangay  {{ user.barangay }}  Computer Literacy Program</a>
+            <a class="navbar-brand ms-3 text-white " href="#">Barangay Computer Literacy Program</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto pe-5">
                 <li class="nav-item dropdown">
@@ -128,9 +111,6 @@
                                  {{ user.userType }} {{ user.username }}
                                 </a>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logout">Log Out</a></li>
                   </ul>
                 </li>
@@ -143,7 +123,7 @@
           <main class="p-3">
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="admin_dashboard.php">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/admin_dashboard">Dashboard</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Manage Users</li>
               </ol>
             </nav>
@@ -192,9 +172,7 @@
                           <td>{{ row[8] }}</td>
                          
                           <td> 
-                         <!-- <a href="/admin_editUser?userid=<?= ##$allusers['userid']; ?>"style="width:100%" class="btn btn-info btn-md">Edit</a> -->
                           <a href="/update_admin_manageuser{{ row[0] }}" style="width:100%" class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#editUser{{ row[0] }}">Edit</a>
-                          
                         </td>
                           </tr>
                            <!-- edit user -->
