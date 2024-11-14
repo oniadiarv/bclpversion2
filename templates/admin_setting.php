@@ -190,7 +190,7 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url_for('update_admin_setting_saveCert') }}" method="POST"
+                                            <form action="" 
                                                 enctype="multipart/form-data">
                                                 <div class="col-12 my-4">
                                                     <label for="certificate" class="form-label">Upload
