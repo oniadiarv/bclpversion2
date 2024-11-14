@@ -21,15 +21,11 @@ app.secret_key = 'your_secret_key'
 # Database connection
 def get_db_connection():
     connection = mysql.connector.connect(
-        #host='o61qijqeuqnj9chh.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        #user='hzev9wej29jyyz1k',  # Default XAMPP username
-        #password='h5hbjdr8d6eqc45g',  # Default XAMPP password
-        #database='xblrx9x291z0omzg'
+        host='o61qijqeuqnj9chh.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user='hzev9wej29jyyz1k',  # Default XAMPP username
+        password='h5hbjdr8d6eqc45g',  # Default XAMPP password
+        database='xblrx9x291z0omzg'
 
-        host='localhost',
-        user='root',  # Default XAMPP username
-        password='',  # Default XAMPP password
-        database='bclp_db'  
     )
     return connection    
    
