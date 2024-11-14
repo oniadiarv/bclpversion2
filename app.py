@@ -25,6 +25,7 @@ def get_db_connection():
         user='pqsw14zceyi323wb',  # Default XAMPP username
         password='lsl9f78axmkrbe4p',  # Default XAMPP password
         database='spt5u5edpuha1lkf'
+
     )
     return connection    
    
@@ -495,14 +496,47 @@ def admin_setting():
     user = session.get('user')
     connection = get_db_connection()
     cursor = connection.cursor()
- 
-    cursor.execute('SELECT * FROM certformat')
+    cursor.execute("SELECT * FROM certformat ")
     results = cursor.fetchall()
- 
     cursor.close()
     connection.close()
 
     return render_template("admin_setting.php",user=user,results = results)
+
+#@app.route('/admin_get_users')
+#def admin_get_user():
+#    connection = get_db_connection()
+#    cursor = connection.cursor()
+#    cursor.execute("SELECT DISTINCT username FROM users")
+#    users = cursor.fetchall()
+#    cursor.close()
+#    connection.close()
+#    return jsonify(users)
+
+@app.route('/update_admin_setting_saveCert',methods=['POST','GET'])
+def update_admin_setting_saveCert():
+    if request.method == 'POST':
+        user = session.get('user')
+        certId = request.form['certId']
+        certificate = request.files['certificate']
+
+        image_path = os.path.join('static/webimg', certificate.filename)
+        certificate.save(image_path)
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("""
+            UPDATE certformat SET image=%s where certId = %s
+        """,                (certificate.filename,certId))
+
+        cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Update Certificate', current_datetime))
+
+        connection.commit()
+        cursor.close()
+        connection.close()
+        flash('Certificate Format updated successfully!')
+        return redirect(url_for('admin_setting'))
+
 
 # instructor codes ###############################################################
 
@@ -865,10 +899,3 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True) 
-
-
-                  
-
-                    
-                   
-               
