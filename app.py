@@ -400,7 +400,7 @@ def admin_auditTrail():
     user = session.get('user')
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM activity_log ORDER BY log_id DESC ")
+    cursor.execute("SELECT * FROM activity_log ORDER BY date DESC ")
     results = cursor.fetchall()
     cursor.close()
     connection.close()
