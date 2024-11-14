@@ -202,7 +202,13 @@
                                 <form id="editScheduleForm" action="{{ url_for('update_instructor_schedule') }}" method = "POST">
                                     <div class="mb-3">
                                         <label for="scheduleTime" class="form-label">Time:</label>
-                                        <input type="text" class="form-control" id="scheduleTime" name="time" value="{{row.4}}">
+                                        <select class="form-select" id="time" name="time" aria-label="Default select example">
+                                        <option selected value = "{{row.4}}" required>{{row.4}}</option>
+                                        <option value="8:00 - 10:00 am">8:00 - 10:00 am</option>
+                                        <option value="10:00 - 12:00 noon">10:00 - 12:00 noon</option>
+                                        <option value="1:00 - 3:00 pm">1:00 - 3:00 pm</option>
+                                        <option value="3:00 - 5:00 pm">3:00 - 5:00 pm</option>
+                                    </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="scheduleDate" class="form-label">Day:</label>
