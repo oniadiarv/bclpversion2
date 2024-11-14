@@ -199,7 +199,39 @@
 
                                         <div class="col-3">
                                             <label for="barangay" class="form-label">Barangay</label>
-                                            <input type="text" class="form-control" id="barangay" name="barangay" value="{{row.2}}">
+                                            <select class="form-control" id="barangay" name="barangay" required>
+                                        <option value="">{{row.2}}</option>
+                                            <option value="Bagong Ilog">Bagong Ilog</option>
+                                            <option value="Bagong Katipunan">Bagong Katipunan</option>
+                                            <option value="Bambang">Bambang</option>
+                                            <option value="Buting">Buting</option>
+                                            <option value="Dela Paz">Dela Paz</option>
+                                            <option value="Kalawaan">Kalawaan</option>
+                                            <option value="Kapasigan">Kapasigan</option>
+                                            <option value="Kapitolyo">Kapitolyo</option>
+                                            <option value="Malinao">Malinao</option>
+                                            <option value="Manggahan">Manggahan</option>
+                                            <option value="Maybunga">Maybunga</option>
+                                            <option value="Oranbo">Oranbo</option>
+                                            <option value="Palatiw">Palatiw</option>
+                                            <option value="Pinagbuhatan">Pinagbuhatan</option>
+                                            <option value="Pineda">Pineda</option>
+                                            <option value="Rosario">Rosario</option>
+                                            <option value="Sagad">Sagad</option>
+                                            <option value="San Antonio">San Antonio</option>
+                                            <option value="San Joaquin">San Joaquin</option>
+                                            <option value="San Jose">San Jose</option>
+                                            <option value="San Miguel">San Miguel</option>
+                                            <option value="San Nicolas">San Nicolas</option>
+                                            <option value="Santa Cruz">Santa Cruz</option>
+                                            <option value="Santa Lucia">Santa Lucia</option>
+                                            <option value="Santa Rosa">Santa Rosa</option>
+                                            <option value="Santo Tomas">Santo Tomas</option>
+                                            <option value="Santolan">Santolan</option>
+                                            <option value="Sumilang">Sumilang</option>
+                                            <option value="Ugong">Ugong</option>
+                                            <option value="BCLP Office">BCLP Office</option>
+                                        </select>
                                         </div>
                                     </div>
 
@@ -287,17 +319,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="/insert_admin_manageuser" method="POST" enctype="multipart/form-data">
-      {%with messages = get_flashed_messages()%}
-                    {%if messages%}
-                        {% for message in messages %}
-                            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                <strong>{{message}}</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-
-                        {%endfor%}
-                    {%endif%}
-                {%endwith%}
       <div class="modal-body">
           <div class="row">
           <div class = "col-3">
@@ -311,7 +332,39 @@
 
           <div class="col-3">
             <label for="barangay" class="form-label">Barangay</label>
-            <input type="text" class="form-control" id="barangay" name="barangay" placeholder="Middle" required>
+            <select class="form-control" id="barangay" name="barangay" required>
+                                        <option value=""></option>
+                                            <option value="Bagong Ilog">Bagong Ilog</option>
+                                            <option value="Bagong Katipunan">Bagong Katipunan</option>
+                                            <option value="Bambang">Bambang</option>
+                                            <option value="Buting">Buting</option>
+                                            <option value="Dela Paz">Dela Paz</option>
+                                            <option value="Kalawaan">Kalawaan</option>
+                                            <option value="Kapasigan">Kapasigan</option>
+                                            <option value="Kapitolyo">Kapitolyo</option>
+                                            <option value="Malinao">Malinao</option>
+                                            <option value="Manggahan">Manggahan</option>
+                                            <option value="Maybunga">Maybunga</option>
+                                            <option value="Oranbo">Oranbo</option>
+                                            <option value="Palatiw">Palatiw</option>
+                                            <option value="Pinagbuhatan">Pinagbuhatan</option>
+                                            <option value="Pineda">Pineda</option>
+                                            <option value="Rosario">Rosario</option>
+                                            <option value="Sagad">Sagad</option>
+                                            <option value="San Antonio">San Antonio</option>
+                                            <option value="San Joaquin">San Joaquin</option>
+                                            <option value="San Jose">San Jose</option>
+                                            <option value="San Miguel">San Miguel</option>
+                                            <option value="San Nicolas">San Nicolas</option>
+                                            <option value="Santa Cruz">Santa Cruz</option>
+                                            <option value="Santa Lucia">Santa Lucia</option>
+                                            <option value="Santa Rosa">Santa Rosa</option>
+                                            <option value="Santo Tomas">Santo Tomas</option>
+                                            <option value="Santolan">Santolan</option>
+                                            <option value="Sumilang">Sumilang</option>
+                                            <option value="Ugong">Ugong</option>
+                                            <option value="BCLP Office">BCLP Office</option>
+                                        </select>
           </div>
 
           </div>
