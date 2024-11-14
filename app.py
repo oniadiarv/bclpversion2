@@ -25,6 +25,7 @@ def get_db_connection():
         user='pqsw14zceyi323wb',  # Default XAMPP username
         password='lsl9f78axmkrbe4p',  # Default XAMPP password
         database='spt5u5edpuha1lkf'
+     
     )
     return connection    
    
@@ -57,9 +58,10 @@ def get_courses(barangay):
 
 @app.route('/get_time/<courseId>')
 def get_time(courseId):
+    barangay = session.get('barangay')
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT DISTINCT time, sem FROM schedule WHERE courseId = %s AND status = 'Open'", (courseId,))
+    cursor.execute("SELECT DISTINCT s.time, s.sem FROM schedule s JOIN users u ON s.userid = u.userid  WHERE courseId = %s AND u.barangay = %s AND status = 'Open'", (courseId,barangay,))                    
     times = cursor.fetchall()
     cursor.close()
     connection.close()
