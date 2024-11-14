@@ -155,7 +155,7 @@
                         </select>
                         </div>
                         <div class="col-sm-3 col-md-4 col-lg-3 mb-1">
-                        <select class="form-control" name="sem">
+                        <select class="form-control" name="sem" required>
                             <option value="">Select Semester</option>
                             <option value="1st">1st Semester</option>
                             <option value="2nd">2nd Semester</option>
@@ -163,7 +163,8 @@
                         </select>
                         </div>
                         <div class="col-sm-3 col-md-4 col-lg-3 mb-1">
-                        <select class="form-control" name="status">
+                        <select class="form-control" name="status" required>
+                            <option value="">Select Semester</option>
                             <option value="student">Student</option>
                             <option value="Graduate">Graduate</option>
                             <option value="Drop-Out">Drop-Out</option>
@@ -368,7 +369,7 @@
 
         function downloadExcel() {
             var table = document.querySelector('table');
-            var userName = "User Name"; // Replace with actual user name
+            var userName = document.getElementById("name").value;
             var headDepartment = "Head Department"; // Replace with actual department
 
             var excel = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
