@@ -21,10 +21,15 @@ app.secret_key = 'your_secret_key'
 # Database connection
 def get_db_connection():
     connection = mysql.connector.connect(
-        host='o61qijqeuqnj9chh.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        user='pqsw14zceyi323wb',  # Default XAMPP username
-        password='lsl9f78axmkrbe4p',  # Default XAMPP password
-        database='spt5u5edpuha1lkf'  
+        #host='o61qijqeuqnj9chh.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        #user='hzev9wej29jyyz1k',  # Default XAMPP username
+        #password='h5hbjdr8d6eqc45g',  # Default XAMPP password
+        #database='xblrx9x291z0omzg'
+
+        host='localhost',
+        user='root',  # Default XAMPP username
+        password='',  # Default XAMPP password
+        database='bclp_db'  
     )
     return connection    
    
@@ -502,29 +507,17 @@ def admin_setting():
 
     return render_template("admin_setting.php",user=user,results = results)
 
-@app.route('/update_admin_setting_saveCert',methods=['POST','GET'])
-def update_admin_setting_saveCert():
-    if request.method == 'POST':
-        user = session.get('user')
-        certId = request.form['certId']
-        certificate = request.files['certificate']
+#@app.route('/admin_get_users')
+#def admin_get_user():
+#    connection = get_db_connection()
+#    cursor = connection.cursor()
+#    cursor.execute("SELECT DISTINCT username FROM users")
+#    users = cursor.fetchall()
+#    cursor.close()
+#    connection.close()
+#    return jsonify(users)
 
-        image_path = os.path.join('static/webimg', certificate.filename)
-        certificate.save(image_path)
 
-        connection = get_db_connection()
-        cursor = connection.cursor()
-        cursor.execute("""
-            UPDATE certformat SET image=%s where certId = %s
-        """,                (certificate.filename,certId))
-
-        cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Update Certificate', current_datetime))
-
-        connection.commit()
-        cursor.close()
-        connection.close()
-        flash('Certificate Format updated successfully!')
-        return redirect(url_for('admin_setting'))
 
 
 # instructor codes ###############################################################
