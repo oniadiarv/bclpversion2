@@ -495,11 +495,14 @@ def admin_setting():
     user = session.get('user')
     connection = get_db_connection()
     cursor = connection.cursor()
-   
+ 
+    cursor.execute('SELECT * FROM certformat')
+    results = cursor.fetchall()
+ 
     cursor.close()
     connection.close()
 
-    return render_template("admin_setting.php",user=user)
+    return render_template("admin_setting.php",user=user,results = results)
 
 # instructor codes ###############################################################
 
