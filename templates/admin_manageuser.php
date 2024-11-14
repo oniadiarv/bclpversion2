@@ -199,8 +199,8 @@
 
                                         <div class="col-3">
                                             <label for="barangay" class="form-label">Barangay</label>
-                                            <select class="form-control" id="barangay" name="barangay" required>
-                                        <option value="">{{row.2}}</option>
+                                            <select class="form-control" id="barangay" name="barangay">
+                                        <option value="{{row.2}}">{{row.2}}</option>
                                             <option value="Bagong Ilog">Bagong Ilog</option>
                                             <option value="Bagong Katipunan">Bagong Katipunan</option>
                                             <option value="Bambang">Bambang</option>
