@@ -502,16 +502,6 @@ def admin_setting():
 
     return render_template("admin_setting.php",user=user,results = results)
 
-@app.route('/admin_get_users')
-def admin_get_user():
-    connection = get_db_connection()
-    cursor = connection.cursor()
-    cursor.execute("SELECT DISTINCT username FROM users")
-    users = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return jsonify(users)
-
 @app.route('/update_admin_setting_saveCert',methods=['POST','GET'])
 def update_admin_setting_saveCert():
     if request.method == 'POST':
