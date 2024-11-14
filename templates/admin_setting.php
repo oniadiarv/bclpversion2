@@ -171,13 +171,48 @@
 
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                        <a href="{{ row[0] }}" style="width:50%"
+                                        <a href="/update_admin_manageuser{{ row[0] }}" style="width:50%"
                                             class="btn btn-primary btn-md " data-bs-toggle="modal"
                                             data-bs-target="#change{{ row[0] }}">Change</a>
                                     </div>
                                 </td>
                             </tr>
-                            
+                            <!--  change certificate image -->
+                            <div class="modal fade" id="change{{ row[0] }}" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="editScheduledropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="editScheduleLabel">Change Certificate
+                                                Format</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ url_for('update_admin_setting_saveCert') }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                <div class="col-12 my-4">
+                                                    <label for="certificate" class="form-label">Upload
+                                                        Certificate</label><br>
+                                                    <input type="file" class="form-control" name="certificate"
+                                                        id="certificate" accept=".jpg, .jpeg, .png" required>
+                                                </div>
+
+                                                <input type="hidden" id="certId" name="certId" value="{{ row[0] }}">
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" name="update"
+                                                        class="btn btn-primary">Update</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- change certificate image -->
                                 {% endfor %}
 
                         </table>
