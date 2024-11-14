@@ -152,6 +152,7 @@
                 <table id = "myTable" class="table table-hover pt-1">
                   <thead class='table-primary'>
                     <tr>
+                          <th>User ID</th>
                           <th>User Type</th>
                           <th>First Name</th>
                           <th>Middle Name</th>
@@ -164,6 +165,7 @@
                   </thead>
                   {% for row in results %}
                           <tr>
+                          <td>{{ row[0] }}</td>
                           <td>{{ row[1] }}</td>
                           <td>{{ row[3] }}</td>
                           <td>{{ row[4] }}</td>
