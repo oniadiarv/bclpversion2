@@ -25,7 +25,6 @@ def get_db_connection():
         user='pqsw14zceyi323wb',  # Default XAMPP username
         password='lsl9f78axmkrbe4p',  # Default XAMPP password
         database='spt5u5edpuha1lkf'
-
     )
     return connection    
    
@@ -899,3 +898,10 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True) 
+
+
+                  
+
+                    
+                   
+               
