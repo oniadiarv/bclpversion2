@@ -163,7 +163,7 @@
                             </h1>
                             <div class="text-end">
                               <hr class="text-white">
-                            <a class="card-body  fs-5" href="/instructor_manageStudentTable" > >></a>
+                            <a class="card-body  fs-5" href="/instructor_search_manageStudentTable" > >></a>
                           </div>
                             </div>
                         </div>
