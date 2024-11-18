@@ -720,7 +720,7 @@
 
     
 <Script>
-      $(document).ready(function() {
+         $(document).ready(function() {
             $.getJSON('/get_barangays', function(data) {
                 $.each(data, function(index, value) {
                     $('#barangay').append('<option value="' + value[0] + '">' + value[0] + '</option>');
@@ -741,11 +741,12 @@
             });
 
             $('#course').change(function() {
+                var barangay = $('#barangay').val();
                 var courseId = $(this).val();
                 $('#time').empty().append('<option value="">Select Time</option>');
                 $('#sem').val('');
 
-                $.getJSON('/get_time/' + courseId, function(data) {
+                $.getJSON('/get_times/' + barangay + '/' + courseId, function(data) {
                     $.each(data, function(index, value) {
                         $('#time').append('<option value="' + value[0] + '">' + value[0] + '</option>');
                         $('#sem').val(value[1]);
