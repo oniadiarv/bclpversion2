@@ -24,7 +24,7 @@ def get_db_connection():
         host='o61qijqeuqnj9chh.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user='pqsw14zceyi323wb',  # Default XAMPP username
         password='lsl9f78axmkrbe4p',  # Default XAMPP password
-        database='spt5u5edpuha1lkf'  
+        database='spt5u5edpuha1lkf'
     )
     return connection    
    
@@ -49,21 +49,33 @@ def get_barangays():
 def get_courses(barangay):
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT DISTINCT c.courseId, c.courseTitle FROM course c JOIN schedule s ON c.courseId = s.courseId JOIN users u ON s.userid = u.userid WHERE u.barangay = %s ", (barangay,))
+    cursor.execute("""
+        SELECT DISTINCT c.courseId, c.courseTitle 
+        FROM schedule s 
+        JOIN course c ON s.courseId = c.courseId 
+        JOIN users u ON s.userid = u.userid 
+        WHERE u.barangay = %s AND status = 'Open'
+    """, (barangay,))
     courses = cursor.fetchall()
     cursor.close()
     connection.close()
     return jsonify(courses)
 
-@app.route('/get_time/<courseId>')
-def get_time(courseId):
+@app.route('/get_times/<barangay>/<courseId>')
+def get_times(barangay, courseId):
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT DISTINCT time, sem FROM schedule WHERE courseId = %s AND status = 'Open'", (courseId,))
+    cursor.execute("""
+        SELECT time, sem 
+        FROM schedule 
+        WHERE userid IN (SELECT userid FROM users WHERE barangay = %s) 
+        AND courseId = %s
+    """, (barangay, courseId))
     times = cursor.fetchall()
     cursor.close()
     connection.close()
     return jsonify(times)
+
 
 @app.route('/bclp_webpageAssessment', methods=['POST'])
 def assessment():
