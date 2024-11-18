@@ -24,8 +24,7 @@ def get_db_connection():
         host='o61qijqeuqnj9chh.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user='pqsw14zceyi323wb',  # Default XAMPP username
         password='lsl9f78axmkrbe4p',  # Default XAMPP password
-        database='spt5u5edpuha1lkf'
-     
+        database='spt5u5edpuha1lkf'  
     )
     return connection    
    
@@ -40,7 +39,7 @@ def bclp():
 def get_barangays():
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT DISTINCT barangay FROM users where userType = 'Instructor'")
+    cursor.execute("SELECT DISTINCT barangay FROM users")
     barangays = cursor.fetchall()
     cursor.close()
     connection.close()
@@ -50,7 +49,7 @@ def get_barangays():
 def get_courses(barangay):
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT DISTINCT c.courseId, c.courseTitle FROM course c JOIN schedule s ON c.courseId = s.courseId JOIN users u ON s.userid = u.userid WHERE u.barangay = %s AND status = 'Open'", (barangay,))
+    cursor.execute("SELECT DISTINCT c.courseId, c.courseTitle FROM course c JOIN schedule s ON c.courseId = s.courseId JOIN users u ON s.userid = u.userid WHERE u.barangay = %s ", (barangay,))
     courses = cursor.fetchall()
     cursor.close()
     connection.close()
@@ -58,10 +57,9 @@ def get_courses(barangay):
 
 @app.route('/get_time/<courseId>')
 def get_time(courseId):
-    barangay = session.get('barangay')
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT DISTINCT s.time, s.sem FROM schedule s JOIN users u ON s.userid = u.userid  WHERE courseId = %s AND u.barangay = %s AND status = 'Open'", (courseId,barangay,))                    
+    cursor.execute("SELECT DISTINCT time, sem FROM schedule WHERE courseId = %s AND status = 'Open'", (courseId,))
     times = cursor.fetchall()
     cursor.close()
     connection.close()
@@ -504,16 +502,6 @@ def admin_setting():
 
     return render_template("admin_setting.php",user=user,results = results)
 
-#@app.route('/admin_get_users')
-#def admin_get_user():
-#    connection = get_db_connection()
-#    cursor = connection.cursor()
-#    cursor.execute("SELECT DISTINCT username FROM users")
-#    users = cursor.fetchall()
-#    cursor.close()
-#    connection.close()
-#    return jsonify(users)
-
 @app.route('/update_admin_setting_saveCert',methods=['POST','GET'])
 def update_admin_setting_saveCert():
     if request.method == 'POST':
@@ -537,6 +525,67 @@ def update_admin_setting_saveCert():
         connection.close()
         flash('Certificate Format updated successfully!')
         return redirect(url_for('admin_setting'))
+    
+#---------------------------------
+@app.route('/get_barangay')
+def get_barangay():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT DISTINCT barangay FROM users")
+    barangays = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(barangays)
+
+@app.route('/get_username/<barangay>')
+def get_username(barangay):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT userid, username FROM users WHERE barangay = %s", (barangay,))
+    users = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(users)
+
+@app.route('/api/reset-password', methods=['POST'])
+def reset_password():
+    user = session.get('user')
+    userid = request.args.get('userid')
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT username FROM users WHERE userid = %s", (userid,))
+    username = cursor.fetchone()[0]
+    new_password = hashlib.md5(username.encode()).hexdigest()
+    cursor.execute("UPDATE users SET password = %s WHERE userid = %s", (new_password, userid))
+    cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Reset Password', current_datetime))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({'message': 'Password reset successfully!'})
+
+@app.route('/api/change-password', methods=['POST'])
+def change_password():
+    user = session.get('user')
+    data = request.get_json()
+    userid = data['userid']
+    old_password = hashlib.md5(data['oldPassword'].encode()).hexdigest()
+    new_password = hashlib.md5(data['newPassword'].encode()).hexdigest()
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT password FROM users WHERE userid = %s", (userid,))
+    current_password = cursor.fetchone()[0]
+
+    if current_password != old_password:
+        return jsonify({'message': 'Old password is incorrect!'}), 400
+
+    cursor.execute("UPDATE users SET password = %s WHERE userid = %s", (new_password, userid))
+    cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Change user Password', current_datetime))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({'message': 'Password changed successfully!'})
+    #return render_template('setting.html'), jsonify({'message': 'Password changed successfully!'})
 
 
 # instructor codes ###############################################################
@@ -900,10 +949,3 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True) 
-
-
-                  
-
-                    
-                   
-               
