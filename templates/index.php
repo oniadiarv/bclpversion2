@@ -546,7 +546,9 @@
                             <div class="form-group mb-3">
                                 <div class="row">
                                     <div class="col-sm-3 col-md-4 col-lg-3"><label for="cellphone">Cellphone</label> 
-                                        <input type="number" class="form-control" id="cellphone" name="cellphone" required>
+                                        <input type="tel" class="form-control" id="cellphone" name="cellphone" value = "+63" 
+                                        pattern = "^\+63[0-9]{10}$"
+                                        required>
                                         <small class="form-text text-danger" id="cellphoneError"></small>
                                     </div>
                                     <div class="col-sm-3 col-md-4 col-lg-4"><label for="email">Email</label>
@@ -764,9 +766,9 @@
             const ageInput = document.getElementById('age').value;
 
             // Validate contact number
-            const contactPattern = /^09\d{9}$/; // Regex for 11 digits starting with 09
+            const contactPattern = /^\+63\d{10}$/; // Regex for 11 digits starting with 09
             if (!contactPattern.test(contactInput)) {
-                document.getElementById('cellphoneError').innerText = 'Contact number must be 11 digits and start with 09.';
+                document.getElementById('cellphoneError').innerText = 'Contact must start with +63 followed by the 10 digits number.';
                 event.preventDefault(); // Prevent form submission
                 return;
             }
