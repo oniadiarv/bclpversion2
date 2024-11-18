@@ -218,27 +218,118 @@
                         </table>
                     </div>
                 </div>
-  <!--
+  
                 <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
                     <h3>Manage Password</h3>
                     <div class="col-12">
-                        <div class="row">
-                            <div class="col-sm-2 col-md-4 col-lg-6 mb-1">
-                                <select class="form-control" id="user" name="user" required>
-                                    <option value=""> Select User</option>
-                                </select>
+                        <form id = "userForm">
+                            <div class="row">
+                                <div class="col-sm-2 col-md-4 col-lg-3 mb-1">
+                                    <select id="barangay" class="form-control" onchange="fetchUsernames()">
+                                        <option value=""> Select BCLP Site</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-2 col-md-4 col-lg-3 mb-1">
+                                    <select id="username" class="form-control">
+                                        <option value=""> Select Username</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 col-md-4 col-lg-3 mb-1">
+                                        <button type="button" class="btn btn-info" style="width:100%" onclick="resetPassword()">Reset Password</button>
+                                </div>
+                                <div class="col-sm-2 col-md-4 col-lg-3 mb-1">
+                                        <button type="button" class="btn btn-primary" style="width:100%" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
+                                </div>
                             </div>
-                            <div class="col-sm-2 col-md-4 col-lg-3 mb-1">
-                                    <button type="submit" name = "search" class="btn btn-primary"  style="width:100%"> Reset</button>
-                            </div>
-                            <div class="col-sm-2 col-md-4 col-lg-3 mb-1">
-                                    <button type="submit" name = "search" class="btn btn-primary"  style="width:100%"> Change Password</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
- -->
+ 
             </main>
+
+            <div class="modal fade" id="changePasswordModal" data-bs-backdrop="static"
+            data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePasswordModal"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="editScheduleLabel">change Password
+                            Format</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                        <div class="col-12 my-4">
+                               <label for="newPassword">New Password:</label>
+                                <div class="form-group input-group">
+                                    <input type="password" class="form-control" id="newPassword" name="password"
+                                        required>
+                                    <div class="input-group-text">
+                                        <i class="fa fa-eye"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 my-4">
+                                <label for="oldPassword">Old Password:</label>
+                                    <div class="form-group input-group">
+                                        <input type="password" class="form-control" id="oldPassword" name="oldPassword"
+                                             required>
+
+                                        <div class="input-group-text" onclick="password_show_hide2();">
+                                            <i class="fa fa-eye" id="show_eye2"></i>
+                                            <i class="fas fa-eye-slash d-none" id="hide_eye2"></i>
+                                        </div>
+
+                                    </div>
+                            </div>
+
+                          
+
+                            <div class="col-12 mt-3">
+                                <div class="pasCon">
+                                <p>Password must contains:</p>
+                                </div>
+                                <ul class="requirement-list">
+                                <li>
+                                    <i class="fa fa-circle" aria-hidden="true"></i>
+                                    <span>At least 8 Characters length</span>
+
+                                </li>
+                                <li>
+                                    <i class="fa fa-circle" aria-hidden="true"></i>
+                                    <span>At least has 1 number (0..9) </span>
+
+                                </li>
+                                <li>
+                                    <i class="fa fa-circle" aria-hidden="true"></i>
+                                    <span>At least has 1 lowercase (a..z) </span>
+                                </li>
+                                <li>
+                                    <i class="fa fa-circle" aria-hidden="true"></i>
+                                    <span>At least has 1 special symbol (!..$) </span>
+                                </li>
+                                <li>
+                                    <i class="fa fa-circle" aria-hidden="true"></i>
+                                    <span>At least has 1 uppercase (A..Z) </span>
+                                </li>
+                                </ul>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="changePassword()">Update</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
             <!--End Main Body
       </div>
   </div>
@@ -290,6 +381,108 @@
                 });
             });
         })
+
+        const passwordInput = document.querySelector(".form-group input");
+        const eyeIcon = document.querySelector(".form-group i");
+        const requirementList = document.querySelectorAll(".requirement-list li");
+        //const requirementListIcon = document.querySelectorAll(".requirement-list span");
+
+        const requirements = [
+          { regex: /.{8,}/, index: 0 },
+          { regex: /[0-9]/, index: 1 },
+          { regex: /[a-z]/, index: 2 },
+          { regex: /[^A-Za-z0-9]/, index: 3 },
+          { regex: /[A-Z]/, index: 4 },
+        ]
+
+        passwordInput.addEventListener("keyup", (e) => {
+          requirements.forEach(item => {
+            const isValid = item.regex.test(e.target.value);
+            const requirementsItem = requirementList[item.index];
+
+            if (isValid) {
+              requirementsItem.firstElementChild.className = "fa fa-check";
+              requirementsItem.style.color = "blue";
+              requirementsItem.style.fontSize = "17px";
+
+            } else {
+              requirementsItem.firstElementChild.className = "fa fa-circle";
+              requirementsItem.style.color = "black";
+              requirementsItem.style.fontSize = "15px";
+
+            }
+          });
+        });
+
+        eyeIcon.addEventListener("click", () => {
+          passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+          eyeIcon.className = `fa fa-eye${passwordInput.type === "password" ? "" : "-slash"}`;
+        });
+
+        function password_show_hide2() {
+          var x = document.getElementById("oldPassword");
+          var show_eye = document.getElementById("show_eye2");
+          var hide_eye = document.getElementById("hide_eye2");
+          hide_eye.classList.remove("d-none");
+          if (x.type === "password") {
+            x.type = "text";
+            show_eye.style.display = "none";
+            hide_eye.style.display = "block";
+          } else {
+            x.type = "password";
+            show_eye.style.display = "block";
+            hide_eye.style.display = "none";
+          }
+        }
+
+        $(document).ready(function() {
+            $.getJSON('/get_barangay', function(data) {
+                $.each(data, function(index, value) {
+                    $('#barangay').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+                });
+            });
+
+            $('#barangay').change(function() {
+                var barangay = $(this).val();
+                $('#username').empty().append('<option value="">Select Username</option>');
+
+                $.getJSON('/get_username/' + barangay, function(data) {
+                    $.each(data, function(index, value) {
+                        $('#username').append('<option value="' + value[0] + '">' + value[1] + '</option>');
+                    });
+                });
+            });
+        });
+
+function resetPassword() {
+    const username = document.getElementById('username').value;
+    fetch(`/api/reset-password?userid=${username}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        });
+}
+
+function changePassword() {
+    const userid = document.getElementById('username').value;
+    const oldPassword = document.getElementById('oldPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+
+    fetch(`/api/change-password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userid, oldPassword, newPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        $('#changePasswordModal').modal('hide');
+    });
+}
+
+
             </Script>
 
 
