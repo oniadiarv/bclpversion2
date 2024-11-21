@@ -39,7 +39,7 @@ def bclp():
 def get_barangays():
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT DISTINCT barangay FROM users")
+    cursor.execute("SELECT DISTINCT barangay FROM users where status = 'Active'")
     barangays = cursor.fetchall()
     cursor.close()
     connection.close()
@@ -358,8 +358,8 @@ def insert_admin_manageuser():
     # Save user to database
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO users (userType, barangay, fname, mname, lname, email, image, username, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
-                   (userType, barangay, fname, mname, lname, email, image.filename, username, hashed_password))
+    cursor.execute('INSERT INTO users (userType, barangay, fname, mname, lname, email, image, username, password,status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,  %s,%s)',
+                   (userType, barangay, fname, mname, lname, email, image.filename, username, hashed_password,"Active"))
     conn.commit()
 
     
@@ -379,6 +379,7 @@ def update_admin_manageuser():
         user = session.get('user')
         userid = request.form['userid']
         userType = request.form['userType']
+        userStatus = request.form['userStatus']
         barangay = request.form['barangay']
         fname = request.form['fname']
         mname = request.form['mname']
@@ -393,8 +394,8 @@ def update_admin_manageuser():
         connection = get_db_connection()
         cursor = connection.cursor()
         cursor.execute("""
-            UPDATE users SET userType =%s, barangay=%s, fname=%s, mname=%s,lname=%s, email=%s, image=%s, username=%s where userid = %s
-        """,                (userType,barangay,fname,mname,lname,email,image.filename,username,userid))
+            UPDATE users SET userType =%s,status=%s, barangay=%s, fname=%s, mname=%s,lname=%s, email=%s, image=%s, username=%s where userid = %s
+        """,                (userType,userStatus,barangay,fname,mname,lname,email,image.filename,username,userid))
 
         cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Update user data', current_datetime))
 
