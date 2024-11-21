@@ -209,14 +209,14 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="addcourseLabel">Add Courses</h1>
+                            <h1 class="modal-title fs-5" id="addcourseLabel">Add Announcement</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
                             <form action="/admin_add_notification" method="POST">
                                 <div class="mb-3">
-                                    <label for="message" class="form-label">Course Level</label>
+                                    <label for="message" class="form-label">Announcement here:</label>
                                     <textarea class="form-control" id="message" rows="6" name="message"></textarea>
                                 </div>
                         </div>
