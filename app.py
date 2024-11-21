@@ -54,7 +54,7 @@ def get_courses(barangay):
         FROM schedule s 
         JOIN course c ON s.courseId = c.courseId 
         JOIN users u ON s.userid = u.userid 
-        WHERE u.barangay = %s AND status = 'Open'
+        WHERE u.barangay = %s AND s.status = 'Open'
     """, (barangay,))
     courses = cursor.fetchall()
     cursor.close()
