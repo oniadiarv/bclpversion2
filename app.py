@@ -39,7 +39,7 @@ def bclp():
 def get_barangays():
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT DISTINCT barangay FROM users where status = 'Active'")
+    cursor.execute("SELECT DISTINCT barangay FROM users where status = 'Active' AND barangay = 'BCLP Office'")
     barangays = cursor.fetchall()
     cursor.close()
     connection.close()
