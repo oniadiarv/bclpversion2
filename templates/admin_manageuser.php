@@ -244,6 +244,16 @@
                                   <option value="BCLP Office">BCLP Office</option>
                                 </select>
                               </div>
+
+                              <div class="col-3">
+                                <label for="userStatus" class="form-label">Status</label>
+                                <select class="form-select pb-1" id="userType" name="userStatus"
+                                  aria-label="Default select example">
+                                  <option selected>{{row.10}}</option>
+                                  <option value="Active">Active</option>
+                                  <option value="Inactive">Inactive</option>
+                                </select>
+                              </div>
                             </div>
 
                             <div class="row m-3">
