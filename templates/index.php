@@ -538,6 +538,8 @@
                                         <option value=""></option>
                                             <option value="Single">Single</option>
                                             <option value="Married">Married</option>
+                                            <option value="Widowed">Widowed</option>
+                                            <option value="Separeted">Separated</option>
                                         </select>
                                     </div>
                                 </div>
@@ -776,8 +778,8 @@
 
             // Validate age
             const age = parseInt(ageInput, 10);
-            if (age < 18 || age > 70) {
-                document.getElementById('ageError').innerText = 'Age must be between 18 and 70 years.';
+            if (age < 16 || age > 85) {
+                document.getElementById('ageError').innerText = 'Age must be between 16 and 85 years.';
                 event.preventDefault(); // Prevent form submission
                 return;
             }
