@@ -165,7 +165,6 @@
                         <div class="col-sm-3 col-md-4 col-lg-3 mb-1">
                         <select class="form-control" name="status" required>
                             <option value="">Select Status</option>
-                            <option value="Enrollee">Enrollee</option>
                             <option value="student">Student</option>
                             <option value="Graduate">Graduate</option>
                             <option value="Drop-Out">Drop-Out</option>
