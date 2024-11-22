@@ -934,8 +934,15 @@ def search_instructor_manageReport():
         status = request.form['status']
 
         connection = get_db_connection()
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM student WHERE courseId = %s AND sem = %s AND isStudent = %s AND branch = %s AND batch = %s ", (course,sem,status,user['barangay'],current_datetime))
+        cursor = connection.cursor() 
+
+        if status == 'enrollee':
+            cursor.execute("SELECT * FROM enrollee WHERE courseId = %s AND sem = %s AND isStudent = %s AND branch = %s AND batch = %s ", (course,sem,status,user['barangay'],current_datetime))
+        else:
+            cursor.execute("SELECT * FROM student WHERE courseId = %s AND sem = %s AND isStudent = %s AND branch = %s AND batch = %s ", (course,sem,status,user['barangay'],current_datetime))
+     
+       // cursor.execute("SELECT * FROM student WHERE courseId = %s AND sem = %s AND isStudent = %s AND branch = %s AND batch = %s ", (course,sem,status,user['barangay'],current_datetime))
+     
         results = cursor.fetchall()
         connection.commit()
         cursor.close()
