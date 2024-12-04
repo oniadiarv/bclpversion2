@@ -148,6 +148,7 @@
         <div class="col-12">
         <form method="POST" action="{{ url_for('search_instructor_manageReport') }}">
         <input type="hidden" value = "{{ user.fname }} {{ user.mname }} {{ user.lname }}" id = "name">
+        <input type="hidden" value = "{{ user.barangay }}" id = "myBarangay">
                         <div class="row">
                         <div class="col-sm-3 col-md-4 col-lg-3 mb-1">
                         <select class="form-control" id = "course" name="course">
@@ -164,7 +165,7 @@
                         </div>
                         <div class="col-sm-3 col-md-4 col-lg-3 mb-1">
                         <select class="form-control" name="status" required>
-                            <option value="">Select Status</option>
+                            <option value="">Select Semester</option>
                             <option value="student">Student</option>
                             <option value="Graduate">Graduate</option>
                             <option value="Drop-Out">Drop-Out</option>
@@ -297,87 +298,45 @@
                     document.querySelector("#sidebar").classList.toggle("collapsed");
                 });
 
-                const passwordInput = document.querySelector(".form-group input");
-                const eyeIcon = document.querySelector(".form-group i");
-                const requirementList = document.querySelectorAll(".requirement-list li");
-                //const requirementListIcon = document.querySelectorAll(".requirement-list span");
-
-                const requirements = [
-                    { regex: /.{8,}/, index: 0 },
-                    { regex: /[0-9]/, index: 1 },
-                    { regex: /[a-z]/, index: 2 },
-                    { regex: /[^A-Za-z0-9]/, index: 3 },
-                    { regex: /[A-Z]/, index: 4 },
-                ]
-
-                passwordInput.addEventListener("keyup", (e) => {
-                    requirements.forEach(item => {
-                        const isValid = item.regex.test(e.target.value);
-                        const requirementsItem = requirementList[item.index];
-
-                        if (isValid) {
-                            requirementsItem.firstElementChild.className = "fa fa-check";
-                            requirementsItem.style.color = "blue";
-                            requirementsItem.style.fontSize = "17px";
-
-                        } else {
-                            requirementsItem.firstElementChild.className = "fa fa-circle";
-                            requirementsItem.style.color = "black";
-                            requirementsItem.style.fontSize = "15px";
-
-                        }
-                    });
-                });
-
-                eyeIcon.addEventListener("click", () => {
-                    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-                    eyeIcon.className = `fa fa-eye${passwordInput.type === "password" ? "" : "-slash"}`;
-                });
-
-                function password_show_hide2() {
-                    var x = document.getElementById("confirm");
-                    var show_eye = document.getElementById("show_eye2");
-                    var hide_eye = document.getElementById("hide_eye2");
-                    hide_eye.classList.remove("d-none");
-                    if (x.type === "password") {
-                        x.type = "text";
-                        show_eye.style.display = "none";
-                        hide_eye.style.display = "block";
-                    } else {
-                        x.type = "password";
-                        show_eye.style.display = "block";
-                        hide_eye.style.display = "none";
-                    }
-                }
-
             function printTable() {
             var printContents = document.body.innerHTML;
             var tableContents = document.querySelector('table').outerHTML;
             var userName = document.getElementById("name").value;
-            var headDepartment = "Head Department"; // Replace with dynamic department name
+            var myBarangay = document.getElementById("myBarangay").value;
+            //var headDepartment = "Head Department"; // Replace with dynamic department name
             var newWindow = window.open('', '', 'height=800,width=1000');
-            newWindow.document.write('<html><head><title>BCLP Report</title></head><body>');
-            newWindow.document.write('<h1><center>BCLP Report</center></h1>');
+            newWindow.document.write('<html><head><title>BCLP Report</title>');
+            newWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
+            newWindow.document.write('</head><body>');
+            newWindow.document.write('<h1><center> Barangay' + ' ' +myBarangay+ ' '+ 'Report </center></h1>');
             newWindow.document.write(tableContents);
             newWindow.document.write('<br>');
             newWindow.document.write('<p>' + userName + '</p>');
-            newWindow.document.write('<footer>' + headDepartment + '</footer>');
+            newWindow.document.write('<p> Instructor <p>');
+           // newWindow.document.write('<footer>' + headDepartment + '</footer>');
             newWindow.document.write('</body></html>');
             newWindow.document.close();
-            newWindow.print();
+            newWindow.onload = function() {
+                        newWindow.print();
+                        newWindow.close();
+                    };
         }
 
         function downloadExcel() {
             var table = document.querySelector('table');
             var userName = document.getElementById("name").value;
-            var headDepartment = "Head Department"; // Replace with actual department
+            var myBarangay = document.getElementById("myBarangay").value;
+           // var headDepartment = "Head Department"; // Replace with actual department
 
             var excel = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
             excel += '<head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; }</style></head>';
             excel += '<body>';
-            excel += '<h1 style="text-align:center;">BCLP Report</h1>';
+            excel += '<h1><center> Barangay' + ' ' +myBarangay+ ' '+ 'Report </center></h1>';
             excel += '<div>' + table.outerHTML + '</div>';
-            excel += '<footer style="text-align:center;">' + userName + '<br>' + headDepartment + '</footer>';
+            excel += '<br>';
+            excel += '<footer style="text-align:center;">' + userName + '</footer>';
+            excel += '<br>';
+            excel += '<footer style="text-align:center;">Instructor</footer>';
             excel += '</body></html>';
 
             var blob = new Blob([excel], { type: 'application/vnd.ms-excel' });
