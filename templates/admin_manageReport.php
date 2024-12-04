@@ -191,47 +191,56 @@
         </div>
     </div>
 </div>
-                    <div class="card-body bg-white text-black ">
-                    <div class="table-responsive">
-                    
-{% if results %}
-                    <table class="table table-hover pt-1">
-                        <thead class='table-primary'>
-                            <tr >
-                                <th>Name</th>
-                                <th>ADDRESS</th>
-                                <th>EMAIL ADDRESS</th>
-                                <th>CONTACT</th>
-                                <th>AGE</th>
-                                <th>BIRTHDAY</th>
-                                <th>GENDER</th>
-                                <th>CIVIL STATUS</th>
-                                <th>EDUCATION ATTAINMENT</th>
-                                <th>COURSE ID</th>
-                                <th>SEMESTER</th>
-                                <th>BATCH/YEAR</th>
+                <div class="card-body bg-white text-black ">
+                  <div class="table-responsive">
+                    {% if results %}
+                        <table class="table table-hover pt-1" id="dataTable">
+                            <thead class='table-primary'>
+                                <tr >
+                                    <th>Name</th>
+                                    <th>ADDRESS</th>
+                                    <th>EMAIL ADDRESS</th>
+                                    <th>CONTACT</th>
+                                    <th>AGE</th>
+                                    <th>BIRTHDAY</th>
+                                    <th>GENDER</th>
+                                    <th>CIVIL STATUS</th>
+                                    <th>EDUCATION ATTAINMENT</th>
+                                    <th>COURSE ID</th>
+                                    <th>SEMESTER</th>
+                                    <th>BATCH/YEAR</th>
+                                </tr>
+                            </thead>
+                            {% for row in results %}
+                            <tr>
+                            <input type="text" value = "{{ row[1] }}" id = "myBarangay">
+                                <td> {{ row[5] }} {{ row[6] }} {{ row[7] }}</td>
+                                <td> {{ row[19] }} {{ row[16] }} {{ row[18] }}</td>
+                                <td> {{ row[13] }}</td>
+                                <td> {{ row[14] }}</td>
+                                <td> {{ row[10] }}</td>
+                                <td> {{ row[9] }}</td>
+                                <td> {{ row[11] }}</td>
+                                <td> {{ row[12] }}</td>
+                                <td> {{ row[15] }}</td>
+                                <td> {{ row[3] }}</td>
+                                <td> {{ row[2] }}</td>
+                                <td> {{ row[22] }}</td>
                             </tr>
-                        </thead>
-                        {% for row in results %}
-                        <tr>
-                            <td> {{ row[5] }} {{ row[6] }} {{ row[7] }}</td>
-                            <td> {{ row[19] }} {{ row[16] }} {{ row[18] }}</td>
-                            <td> {{ row[13] }}</td>
-                            <td> {{ row[14] }}</td>
-                            <td> {{ row[10] }}</td>
-                            <td> {{ row[9] }}</td>
-                            <td> {{ row[11] }}</td>
-                            <td> {{ row[12] }}</td>
-                            <td> {{ row[15] }}</td>
-                            <td> {{ row[3] }}</td>
-                            <td> {{ row[2] }}</td>
-                            <td> {{ row[22] }}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                    {% endif %}  
+                            {% endfor %}
+                        </table>
+                        {% endif %}  
                     </div>
+                </div>
+                <div class="col-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <button class="btn btn-primary ms-4 d-flex float-end " onclick="printTable()">Print</button>
+                                <button class="btn btn-primary d-flex float-end " onclick="downloadExcel()">Download</button>
+                            </div>
+                        </div>
                      </div>
+
                 </div>
                 </div>
 
@@ -298,112 +307,64 @@
                 toggler.addEventListener("click", function () {
                     document.querySelector("#sidebar").classList.toggle("collapsed");
                 });
-
-                const passwordInput = document.querySelector(".form-group input");
-                const eyeIcon = document.querySelector(".form-group i");
-                const requirementList = document.querySelectorAll(".requirement-list li");
-                //const requirementListIcon = document.querySelectorAll(".requirement-list span");
-
-                const requirements = [
-                    { regex: /.{8,}/, index: 0 },
-                    { regex: /[0-9]/, index: 1 },
-                    { regex: /[a-z]/, index: 2 },
-                    { regex: /[^A-Za-z0-9]/, index: 3 },
-                    { regex: /[A-Z]/, index: 4 },
-                ]
-
-                passwordInput.addEventListener("keyup", (e) => {
-                    requirements.forEach(item => {
-                        const isValid = item.regex.test(e.target.value);
-                        const requirementsItem = requirementList[item.index];
-
-                        if (isValid) {
-                            requirementsItem.firstElementChild.className = "fa fa-check";
-                            requirementsItem.style.color = "blue";
-                            requirementsItem.style.fontSize = "17px";
-
-                        } else {
-                            requirementsItem.firstElementChild.className = "fa fa-circle";
-                            requirementsItem.style.color = "black";
-                            requirementsItem.style.fontSize = "15px";
-
-                        }
-                    });
-                });
-
-                eyeIcon.addEventListener("click", () => {
-                    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-                    eyeIcon.className = `fa fa-eye${passwordInput.type === "password" ? "" : "-slash"}`;
-                });
-
-                function password_show_hide2() {
-                    var x = document.getElementById("confirm");
-                    var show_eye = document.getElementById("show_eye2");
-                    var hide_eye = document.getElementById("hide_eye2");
-                    hide_eye.classList.remove("d-none");
-                    if (x.type === "password") {
-                        x.type = "text";
-                        show_eye.style.display = "none";
-                        hide_eye.style.display = "block";
-                    } else {
-                        x.type = "password";
-                        show_eye.style.display = "block";
-                        hide_eye.style.display = "none";
-                    }
+                
+                function printTable() {
+                    // Get the table element
+                    var table = document.getElementById("dataTable").outerHTML;
+                    var myBarangay = document.getElementById("myBarangay").value;
+                    // Create a new window
+                    var newWindow = window.open('', '', 'height=600,width=800');
+                    
+                    // Write the HTML for the new window
+                    newWindow.document.write('<html><head><title>Print Table</title>');
+                    newWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
+                    newWindow.document.write('</head><body>');
+                    newWindow.document.write('<h1 class="text-center">Barangay ' + myBarangay+' Reports</h1>'); // Header for printing
+                    newWindow.document.write(table);
+                    newWindow.document.write('</body></html>');
+                    
+                    // Close the document to render the content
+                    newWindow.document.close();
+                    
+                    // Wait for the content to load before printing
+                    newWindow.onload = function() {
+                        newWindow.print();
+                        newWindow.close();
+                    };
                 }
 
-            function printTable() {
-            var printContents = document.body.innerHTML;
-            var tableContents = document.querySelector('table').outerHTML;
-            var userName = document.getElementById("name").value;
-            var headDepartment = "Head Department"; // Replace with dynamic department name
-            var newWindow = window.open('', '', 'height=800,width=1000');
-            newWindow.document.write('<html><head><title>BCLP Report</title></head><body>');
-            newWindow.document.write('<h1><center>BCLP Report</center></h1>');
-            newWindow.document.write(tableContents);
-            newWindow.document.write('<br>');
-            newWindow.document.write('<p>' + userName + '</p>');
-            newWindow.document.write('<footer>' + headDepartment + '</footer>');
-            newWindow.document.write('</body></html>');
-            newWindow.document.close();
-            newWindow.print();
-        }
+                function downloadExcel() {
+                    var table = document.querySelector('table');
+                    var myBarangay = document.getElementById("myBarangay").value;
+                    var excel = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+                    excel += '<head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; }</style></head>';
+                    excel += '<body>';
+                    excel += '<h1><center> Barangay' + ' ' +myBarangay+ ' '+ 'Report </center></h1>';
+                    excel += '<div>' + table.outerHTML + '</div>';
+                    excel += '</body></html>';
 
-        function downloadExcel() {
-            var table = document.querySelector('table');
-            var userName = "User Name"; // Replace with actual user name
-            var headDepartment = "Head Department"; // Replace with actual department
+                    var blob = new Blob([excel], { type: 'application/vnd.ms-excel' });
+                    var link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'BCLP_Report.xls';
+                    link.click();
+                }
 
-            var excel = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
-            excel += '<head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; }</style></head>';
-            excel += '<body>';
-            excel += '<h1 style="text-align:center;">BCLP Report</h1>';
-            excel += '<div>' + table.outerHTML + '</div>';
-            excel += '<footer style="text-align:center;">' + userName + '<br>' + headDepartment + '</footer>';
-            excel += '</body></html>';
+                $(document).ready(function() {
+                    $.getJSON('/admin_get_course', function(data) {
+                        $.each(data, function(index, value) {
+                            $('#course').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+                        });
+                    });
+                })
 
-            var blob = new Blob([excel], { type: 'application/vnd.ms-excel' });
-            var link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'BCLP_Report.xls';
-            link.click();
-        }
-
-        $(document).ready(function() {
-            $.getJSON('/admin_get_course', function(data) {
-                $.each(data, function(index, value) {
-                    $('#course').append('<option value="' + value[0] + '">' + value[0] + '</option>');
-                });
-            });
-        })
-
-        $(document).ready(function() {
-            $.getJSON('/admin_get_site', function(data) {
-                $.each(data, function(index, value) {
-                    $('#branch').append('<option value="' + value[0] + '">' + value[0] + '</option>');
-                });
-            });
-        })
+                $(document).ready(function() {
+                    $.getJSON('/admin_get_site', function(data) {
+                        $.each(data, function(index, value) {
+                            $('#branch').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+                        });
+                    });
+                })
             </Script>
 
 
