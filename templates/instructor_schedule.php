@@ -329,7 +329,7 @@
                                         <option selected value = "" required>select semester</option>
                                         <option value="1st">1st Sem</option>
                                         <option value="2nd">2nd Sem</option>
-                                        <option value="3rd">3nd Sem</option>
+                                        <option value="3rd">3rd Sem</option>
                                     </select>
                                 </div>
 
