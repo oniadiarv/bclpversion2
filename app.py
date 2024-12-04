@@ -24,7 +24,7 @@ def get_db_connection():
         host='o61qijqeuqnj9chh.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user='pqsw14zceyi323wb',  # Default XAMPP username
         password='lsl9f78axmkrbe4p',  # Default XAMPP password
-        database='spt5u5edpuha1lkf'
+        database='spt5u5edpuha1lkf' 
     )
     return connection    
    
@@ -427,10 +427,12 @@ def admin_notification():
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM announcement ")
     results = cursor.fetchall()
+    cursor.execute("SELECT * FROM sms ")
+    sms = cursor.fetchall()
     cursor.close()
     connection.close()
     
-    return render_template("admin_notification.php",results=results,user=user)
+    return render_template("admin_notification.php",results=results,user=user,sms=sms)
 
 @app.route('/admin_add_notification', methods=['POST'])
 def add_notification():
@@ -454,6 +456,28 @@ def admin_delete_notification(announceId):
     connection.close()
     flash('Notification deleted successfully!')
     return redirect(url_for('admin_notification'))
+
+
+@app.route('/admin_updateSms_notification',methods=['POST','GET'])
+def admin_updateSms_notification():
+    if request.method == 'POST':
+        user = session.get('user')
+        smsId = request.form['smsId']
+        smsmessage = request.form['smsmessage']
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("""
+            UPDATE sms SET smsMessage=%s where smsId = %s
+        """,                (smsmessage,smsId,))
+
+        cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Update SMS Message', current_datetime))
+
+        connection.commit()
+        cursor.close()
+        connection.close()
+        flash('SMS Message updated successfully!')
+        return redirect(url_for('admin_notification'))
 
 # admin codes - report ###############################################################
 @app.route("/admin_manageReport")
@@ -794,15 +818,46 @@ def insert_instructor_schedule():
         sem = request.form['sem']
         status = request.form['status']
 
-        connection = get_db_connection()
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO schedule (userid,courseId,courseTitle,time,day,sem,status) VALUES (%s, %s, %s,%s, %s,%s, %s)", (userid ,courseId,courseTitle,time,day,sem,status))
-        cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Add Schedule', current_datetime))
-        connection.commit()
-        cursor.close()
-        connection.close()
-        flash("New Schedule is Added !")
-        return redirect(url_for('instructor_schedule'))
+        if check_conflict(courseId, time, day):
+            flash('Schedule conflict detected!', 'error')
+        else:
+            save_schedule(userid ,courseId,courseTitle,time,day,sem,status)
+            flash('Schedule saved successfully!', 'success')
+        return redirect('/instructor_schedule')
+
+    return render_template('instructor_schedule.php')
+
+def check_conflict(courseId, time, day):
+    db = get_db_connection()
+    cursor = db.cursor()
+    query = "SELECT * FROM schedule WHERE courseId = %s AND time = %s AND day = %s"
+    cursor.execute(query, (courseId, time, day))
+    result = cursor.fetchall()
+    cursor.close()
+    db.close()
+    return len(result) > 0
+
+def save_schedule(userid ,courseId,courseTitle,time,day,sem,status):
+    user = session.get('user')
+    db = get_db_connection()
+    cursor = db.cursor()
+    query = "INSERT INTO schedule (userid,courseId,courseTitle,time,day,sem,status) VALUES (%s, %s, %s,%s, %s,%s, %s)"
+    cursor.execute(query, (userid ,courseId,courseTitle,time,day,sem,status))  
+    cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Add Schedule', current_datetime))
+    db.commit()
+    cursor.close()
+    db.close()
+
+    
+        #connection = get_db_connection()
+        #cursor = connection.cursor()
+        #cursor.execute("INSERT INTO schedule (userid,courseId,courseTitle,time,day,sem,status) VALUES (%s, %s, %s,%s, %s,%s, %s)", (userid ,courseId,courseTitle,time,day,sem,status))
+        #cursor.execute("INSERT INTO activity_log (userid, userType, Name, activity, date) VALUES (%s, %s, %s,%s, %s)", (user['userid'], user['userType'], user['username'], 'Add Schedule', current_datetime))
+        #onnection.commit()
+        #cursor.close()
+        #connection.close()
+        #flash("New Schedule is Added !")
+        #return redirect(url_for('instructor_schedule'))
 
 
 @app.route('/update_instructor_schedule',methods=['POST','GET'])
@@ -934,7 +989,7 @@ def search_instructor_manageReport():
         status = request.form['status']
 
         connection = get_db_connection()
-        cursor = connection.cursor() 
+        cursor = connection.cursor()
         cursor.execute("SELECT * FROM student WHERE courseId = %s AND sem = %s AND isStudent = %s AND branch = %s AND batch = %s ", (course,sem,status,user['barangay'],current_datetime))
         results = cursor.fetchall()
         connection.commit()
