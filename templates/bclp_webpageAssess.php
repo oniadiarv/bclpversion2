@@ -8,18 +8,53 @@
     <link href="static/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
    <link rel="stylesheet" href="static/css/style.css">
    <style>
-      #card-body {
+        #card-body {
             background-color: white;
             color: white;
         }
+        body {
+        margin: 0;
+        background-image: url('static/webimg/bglogin.jpg');
+        background-size: cover; 
+        background-position: center;
+        background-repeat: no-repeat; 
+        min-height: 100vh; 
+        color: white; 
+        }
+        
+        .interactive-header {
+            color: blue; 
+            font-size: 2.5em; 
+            transition: color 0.3s ease; 
+            text-decoration: underline;
+        }
+
+        .interactive-header:hover {
+            color: black; 
+            cursor: pointer; 
+        }
+
+        .interactives-header {
+            color: white; 
+            font-size: 2.5em; 
+            transition: color 0.3s ease; 
+        }
+
+        .interactives-header:hover {
+            color: black; 
+            cursor: pointer; 
+        }
+      
+
    </style>
 </head>
 <body> 
-    <div class="container">
-        <div class="container text-center my-4">
-            <h1>Assessment Test</h1>
+    <div id="container" class="container">
+        <div class="container text-center mt-4">
+            <h1 class="interactive-header">BARANGAY COMPUTER LITERACY PROGRAM</h1>
         </div>
-        <div class="card shadow-lg bg-body-tertiary rounded">
+        <div class="card w-75 m-auto mb-2 shadow-lg bg-body-tertiary rounded">
+        <div class="card-header text-bg-primary mb-3 text-center"><h1 class="interactives-header">Assessment Test</h1></div>
             <div id = "card-body" class="card-body text-black">
             <form action="/bclp_webpageSave" method="POST">
             {% for question in questions %}
